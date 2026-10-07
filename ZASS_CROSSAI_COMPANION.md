@@ -792,6 +792,168 @@ GitHub must be offered at promotion time but remains optional. CrossAI must not 
 
 **Reason:** `PROJECT` is the clearer human-facing destination, while `[DESIGN]` preserves the meaning that the child thread is still design work until the user explicitly promotes it into a durable Project.
 
+## D-024 | LOCKED — Persistent external-channel binding, shared Telegram, and BYOC WhatsApp
+
+**Decision:** External channels use a persistent Core-owned binding model. The short-lived timeout applies only to the initial pairing credential/request; once verification succeeds, the resulting channel binding remains `ACTIVE` until explicitly revoked, replaced, invalidated by the platform/credential state, or otherwise terminated by an authorized lifecycle action.
+
+```text
+initial pairing request
+(short-lived, single-use)
+        ↓
+verified
+        ↓
+ACTIVE persistent binding
+        ↓
+normal chat does NOT require re-binding
+```
+
+### Two-layer channel model
+
+CrossAI distinguishes:
+
+```text
+A. CHANNEL CONNECTION
+   who owns/configures the bot/channel installation?
+
+B. USER BINDING
+   which CrossAI user is the verified human/channel identity?
+```
+
+Channel connection and user binding are separate authorities.
+
+### Generic user-binding lifecycle
+
+CrossAI Web/Core remains the account-binding authority. An authenticated CrossAI user initiates a short-lived, single-use binding request. The default pairing expiry is **10 minutes**, runtime-configurable.
+
+The external channel must prove control using:
+
+- a platform-derived `channel_user_id`;
+- the pending one-time binding credential/deep-link/QR flow;
+- the expected channel/installation scope.
+
+Companion must never trust a user-typed phone number, username, or arbitrary channel identifier as identity proof.
+
+Core validates and atomically consumes the pending request while creating the persistent binding.
+
+```text
+ISSUED / PENDING
+   ├──→ EXPIRED
+   ├──→ CANCELLED
+   └──→ CONSUMED → ACTIVE → REVOKED
+```
+
+Consumed, expired, cancelled, or revoked pairing credentials cannot be replayed or silently reactivated.
+
+Each external `channel_user_id` may belong to at most one CrossAI user at a time. One CrossAI user may hold multiple verified external-channel bindings.
+
+An existing external identity must never be silently transferred to another CrossAI account. Transfer requires explicit revoke/unlink plus a new verified binding.
+
+### Revoke, rebind, and recovery
+
+Authenticated CrossAI Web must allow the user to inspect and revoke connected channels.
+
+Loss of an external channel does not imply loss of Core continuity:
+
+```text
+old channel → revoked
+new channel → newly verified binding
+                ↓
+same crossai_user_id
+                ↓
+same authorized Core continuity
+```
+
+A user who can still authenticate to CrossAI may revoke a lost external channel without needing access to that old channel.
+
+Loss of the Google/CrossAI account follows the CrossAI/Google account-recovery path. Possession of a Telegram/WhatsApp identity is **not** sufficient to recover or take ownership of a CrossAI account.
+
+Binding resolves identity only; Core authorization still governs conversation, Idea, Decision, Project, and SAVE access.
+
+### Telegram — CrossAI-owned shared bot
+
+Telegram uses a **single CrossAI-owned shared bot/service** for many users.
+
+```text
+CrossAI shared Telegram bot
+          ↓
+many telegram_user_id values
+          ↓
+persistent verified bindings
+          ↓
+crossai_user_id
+```
+
+Each user completes the one-time binding flow, after which normal Telegram chat does not require re-binding. Exact webhook/runtime/rate-limit implementation remains replaceable channel implementation work.
+
+### WhatsApp — BYOC (Bring Your Own Channel)
+
+WhatsApp uses a **BYOC — Bring Your Own Channel** model rather than requiring CrossAI to fund and operate one shared WhatsApp Business/Cloud API account for all users.
+
+The user connects their own Meta/WhatsApp channel installation through CrossAI Web and supplies the required installation/account identifiers and protected credentials according to the final Meta/WhatsApp API capability.
+
+Conceptually:
+
+```text
+USER-001
+   ↓
+CrossAI Web → Connect WhatsApp
+   ↓
+user-owned Meta / WhatsApp Cloud API installation
+   ↓
+CrossAI verifies channel connection
+   ↓
+CHANNEL CONNECTION ACTIVE
+```
+
+A separate one-time user-binding proof then establishes the human/channel identity that is allowed to act as that CrossAI user:
+
+```text
+platform-derived WhatsApp user identity
+        ↓
+verified one-time binding
+        ↓
+persistent whatsapp_user_id ↔ crossai_user_id
+```
+
+Connecting a WhatsApp installation does not by itself authorize every person who can message that number.
+
+Meta/WhatsApp quotas, billing, account standing, template/message rules, and paid usage belong to the user's own Meta/WhatsApp account. CrossAI must not hard-code a fixed free-message quota because provider limits/pricing may change. CrossAI should surface those external dependencies truthfully and leave payment for continued Meta/WhatsApp usage between the user and the external provider.
+
+WhatsApp credentials are protected runtime secrets; they must not become ordinary conversation content or semantic Core state. Exact credential storage, rotation, revocation, webhook verification, and platform-specific setup UX remain implementation/security design.
+
+### Free product + BYOC + BYOK principle
+
+Current product direction is:
+
+> **CrossAI is free as-is; users may bring their own channel (BYOC) and bring their own AI/provider key (BYOK) when they want capabilities, quotas, privacy tiers, or paid usage beyond the free path.**
+
+```text
+CrossAI continuity/orchestration
+        = free product direction
+
+external channel cost
+        = user ↔ channel provider
+
+external AI inference cost
+        = FREE provider quota or user BYOK/provider account
+```
+
+This refines D-021: the existing FREE / BYOK / POWER architecture remains valid, but **POWER does not imply that CrossAI itself must become a paid subscription product**. Under the current direction, stronger paid capability should preferentially be user-funded through BYOK/external-provider mechanisms. Any future CrossAI-paid plan/credits model requires a new explicit owner decision.
+
+### Channel interchangeability
+
+Web, shared Telegram, and BYOC WhatsApp converge on the same Core-owned continuity:
+
+```text
+Web Companion ───────────────┐
+CrossAI shared Telegram ─────┼→ Companion → Core
+User-owned WhatsApp (BYOC) ──┘
+```
+
+No channel owns semantic memory. Once identity is resolved, all authorized channels may create/continue the same Core-owned conversation identities according to Core scope and routing rules.
+
+CrossAI Web remains the richer account/browse/manage surface; Telegram or WhatsApp may become the user's normal conversational surface without needing to reproduce the full CrossAI Web tree UI.
+
 ---
 
 # 7. OPEN QUESTIONS
@@ -827,16 +989,9 @@ Resolved by **D-021 | LOCKED**: one replaceable Provider Adapter supports FREE /
 
 Resolved by **D-022 + D-023 | LOCKED**: Companion may signal IDEA/DECIDE/DESIGN; inferred signals are screened by CrossAI Intelligence using minimum scoped context, while explicit user intent may route directly. Core owns stable routed conversations in CHAT / DECISION / PROJECT trees; PROJECT contains `[DESIGN]` conversations while Core retains the DESIGN domain internally. IDEA has the complete MVP canonical SAVE path; canonical Decision SAVE and full Project creation are deferred. `[DESIGN]` becomes a full Project only after explicit promotion, creating a Google Drive project space and then offering GitHub CREATE / LINK / NOT NOW.
 
-## Q-007 | OPEN — Binding mechanics
+## Q-007 | RESOLVED — Persistent binding + shared Telegram + BYOC WhatsApp
 
-For external channels, define:
-
-- expiry;
-- single-use semantics;
-- replay protection;
-- revoke;
-- rebind;
-- recovery.
+Resolved by **D-024 | LOCKED**: the pairing credential is short-lived/single-use, but successful channel binding is persistent; Core owns revoke/rebind/recovery semantics. Telegram uses one CrossAI-owned shared bot for many users. WhatsApp uses BYOC: each user connects their own Meta/WhatsApp installation and bears its external quota/billing/account obligations. Channel connection and human user binding are separate authorities. CrossAI remains free as-is, with BYOC/BYOK as the preferred mechanism for user-controlled external capability and cost.
 
 ---
 
@@ -875,9 +1030,9 @@ Selecting a provider, quota model, or payment tier too early may hard-code produ
 | Stage | Candidate | Must-have fit | Main purpose | Main risk / dependency | Status |
 |---:|---|---|---|---|---|
 | 1 | Web Chat | PASS | Prove Companion conversation → explicit SAVE → CrossAI Compatible → Core receipt | Exact Web auth/session + Compatible contract still OPEN | **D-016 LOCKED — FIRST** |
-| 2 | WhatsApp | PASS | Prove external consumer channel + verified account binding | WhatsApp API/account/provider mechanics remain OPEN | **D-016 LOCKED — SECOND** |
+| 2 | WhatsApp | PASS | Prove BYOC external consumer channel + persistent verified user binding | BYOC ownership/binding model LOCKED; exact Meta API credential/webhook setup remains implementation work | **D-016 + D-024 LOCKED — SECOND** |
 | 3 | Temaya integration | PASS | Prove a peer assistant can use CrossAI Compatible without Companion | Requires Compatible contract mature enough for external assistant integration | **D-016 LOCKED — THIRD** |
-| 4 | Telegram | PASS | Add shared Telegram bot + binding after earlier boundaries are proven | Telegram webhook/binding implementation remains OPEN | **D-016 LOCKED — FOURTH** |
+| 4 | Telegram | PASS | Add CrossAI-owned shared Telegram bot + persistent user binding after earlier boundaries are proven | Shared-bot/binding model LOCKED; exact webhook/runtime details remain implementation work | **D-016 + D-024 LOCKED — FOURTH** |
 
 **Current direction:** Sequence is owner-LOCKED. D-017 locks the Web Chat MVP vertical slice, D-018 its minimum SAVE contract, D-019 its Web auth/start UX, D-020 Core-owned event-driven private conversation continuity, D-021 the replaceable FREE/BYOK/POWER provider strategy, and D-022 routed CHAT/DECISION/DESIGN conversations with IDEA-only canonical SAVE in the MVP. The next unresolved design topic is **Q-007 external-channel binding mechanics**.
 ---
@@ -1016,15 +1171,15 @@ DELIVERED not started
 
 Next design decision:
 
-> **Q-007 — Define external-channel binding mechanics: expiry, single-use, replay protection, revoke, rebind, and recovery.**
+> **No remaining Q-001–Q-007 design blocker is open.**
 
-No implementation should begin until this boundary is sufficiently designed and owner-approved.
+The current Companion architecture decision set is ready for owner-controlled DESIGN confirmation / action-plan slicing. This statement does not authorize implementation or merge by itself.
 
 ---
 
 # 13. CHANGE CONTROL
 
-- Do not silently rewrite D-001 through D-023.
+- Do not silently rewrite D-001 through D-024.
 - A new finding may refine DESIGN or ACTION_PLAN.
 - A finding that conflicts with a LOCKED decision requires a new explicit decision.
 - Upstream AISYNC contract changes must be reconciled before Companion implementation claims compatibility.
@@ -1036,6 +1191,7 @@ No implementation should begin until this boundary is sufficiently designed and 
 
 | Version | Date | Change |
 |---|---|---|
+| 0.1.9 | 2026-10-07 | LOCKED D-024 external-channel model: first-time pairing is short-lived/single-use but successful binding persists; Telegram uses one CrossAI-owned shared bot, WhatsApp uses BYOC user-owned Meta/Cloud API connection, channel connection and human binding are separate, and CrossAI remains free-as-is with BYOC/BYOK for external capability/cost. |
 | 0.1.8 | 2026-10-07 | LOCKED D-023 visible-tree refinement: PROJECT replaces visible DESIGN tree while child threads remain `[DESIGN]`; full Project exists only after explicit promotion to a Drive-first project space, followed by optional GitHub CREATE/LINK/NOT NOW. |
 | 0.1.7 | 2026-10-07 | LOCKED D-022 routed conversation orchestration: CHAT carries ordinary/[IDEA] conversations, DECISION carries [DECIDE], DESIGN remains the routed domain for [DESIGN] threads; explicit intent can route directly, IDEA canonical SAVE is MVP-complete, and canonical Decision SAVE/full Project creation are deferred. |
 | 0.1.6 | 2026-10-07 | LOCKED D-021 provider freedom strategy: replaceable Provider Adapter with FREE/BYOK/POWER modes; FREE starts with CrossAI-controlled OpenRouter free allowlist, Gemini Free remains alternative/fallback, privacy/terms disclosed, and exact models/providers remain runtime configuration. |
