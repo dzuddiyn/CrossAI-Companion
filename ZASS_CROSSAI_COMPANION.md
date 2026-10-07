@@ -750,6 +750,48 @@ AI signal
 
 Canonical promotion remains subject to the applicable explicit user-controlled flow and factual Core receipt.
 
+## D-023 | LOCKED — PROJECT is the visible tree; [DESIGN] remains the conversation/domain label
+
+**Decision:** The user-facing tree previously described in D-022 as `DESIGN` is renamed to **PROJECT**.
+
+This decision supersedes only the visible-tree naming portion of D-022. The underlying routed domain remains `DESIGN`, and child conversations remain human-readable design threads such as:
+
+```text
+PROJECT
+├── [DESIGN] Offline IoT
+├── [DESIGN] Kerani AI
+└── [DESIGN] Farm dashboard
+```
+
+Core therefore distinguishes:
+
+```text
+visible tree = PROJECT
+conversation/domain route = DESIGN
+canonical Project = not yet created
+```
+
+Entering or creating a `[DESIGN]` conversation under PROJECT does **not** create a full Project.
+
+Full Project promotion requires explicit user intent:
+
+```text
+[DESIGN] Offline IoT
+      ↓
+"jadikan ini project"
+      ↓
+CREATE PROJECT
+      ↓
+user-owned Google Drive project space
+      ↓
+GitHub?
+[ CREATE NEW ] / [ LINK EXISTING ] / [ NOT NOW ]
+```
+
+GitHub must be offered at promotion time but remains optional. CrossAI must not silently create a GitHub repository and must not require GitHub merely to create the Drive-first Project.
+
+**Reason:** `PROJECT` is the clearer human-facing destination, while `[DESIGN]` preserves the meaning that the child thread is still design work until the user explicitly promotes it into a durable Project.
+
 ---
 
 # 7. OPEN QUESTIONS
@@ -783,7 +825,7 @@ Resolved by **D-021 | LOCKED**: one replaceable Provider Adapter supports FREE /
 
 ## Q-006 | RESOLVED — Routed IDEA / DECIDE / DESIGN orchestration
 
-Resolved by **D-022 | LOCKED**: Companion may signal IDEA/DECIDE/DESIGN; inferred signals are screened by CrossAI Intelligence using minimum scoped context, while explicit user intent may route directly. Core owns stable routed conversations in CHAT / DECISION / DESIGN trees. IDEA has the complete MVP canonical SAVE path; canonical Decision SAVE and full Project creation are deferred. DESIGN-to-Project promotion is explicit and creates a Google Drive project space with optional GitHub CREATE / LINK / NOT NOW.
+Resolved by **D-022 + D-023 | LOCKED**: Companion may signal IDEA/DECIDE/DESIGN; inferred signals are screened by CrossAI Intelligence using minimum scoped context, while explicit user intent may route directly. Core owns stable routed conversations in CHAT / DECISION / PROJECT trees; PROJECT contains `[DESIGN]` conversations while Core retains the DESIGN domain internally. IDEA has the complete MVP canonical SAVE path; canonical Decision SAVE and full Project creation are deferred. `[DESIGN]` becomes a full Project only after explicit promotion, creating a Google Drive project space and then offering GitHub CREATE / LINK / NOT NOW.
 
 ## Q-007 | OPEN — Binding mechanics
 
@@ -982,7 +1024,7 @@ No implementation should begin until this boundary is sufficiently designed and 
 
 # 13. CHANGE CONTROL
 
-- Do not silently rewrite D-001 through D-022.
+- Do not silently rewrite D-001 through D-023.
 - A new finding may refine DESIGN or ACTION_PLAN.
 - A finding that conflicts with a LOCKED decision requires a new explicit decision.
 - Upstream AISYNC contract changes must be reconciled before Companion implementation claims compatibility.
@@ -994,7 +1036,8 @@ No implementation should begin until this boundary is sufficiently designed and 
 
 | Version | Date | Change |
 |---|---|---|
-| 0.1.7 | 2026-10-07 | LOCKED D-022 routed conversation orchestration: CHAT carries ordinary/[IDEA] conversations, DECISION carries [DECIDE], visible DESIGN carries [DESIGN]; explicit intent can route directly, IDEA canonical SAVE is MVP-complete, canonical Decision SAVE/full Project creation are deferred, and DESIGN promotion creates a Drive-first project with optional GitHub CREATE/LINK/NOT NOW. |
+| 0.1.8 | 2026-10-07 | LOCKED D-023 visible-tree refinement: PROJECT replaces visible DESIGN tree while child threads remain `[DESIGN]`; full Project exists only after explicit promotion to a Drive-first project space, followed by optional GitHub CREATE/LINK/NOT NOW. |
+| 0.1.7 | 2026-10-07 | LOCKED D-022 routed conversation orchestration: CHAT carries ordinary/[IDEA] conversations, DECISION carries [DECIDE], DESIGN remains the routed domain for [DESIGN] threads; explicit intent can route directly, IDEA canonical SAVE is MVP-complete, and canonical Decision SAVE/full Project creation are deferred. |
 | 0.1.6 | 2026-10-07 | LOCKED D-021 provider freedom strategy: replaceable Provider Adapter with FREE/BYOK/POWER modes; FREE starts with CrossAI-controlled OpenRouter free allowlist, Gemini Free remains alternative/fallback, privacy/terms disclosed, and exact models/providers remain runtime configuration. |
 | 0.1.5 | 2026-10-07 | LOCKED D-020 Core-owned private conversation continuity: stable resumable conversation identity in DUMP tree, event-driven turn persistence, Core-owned transcript/context/recovery lifecycle, conversation-scoped context, archive/delete+tombstone boundary, and Google Drive as future durable user-owned storage direction. |
 | 0.1.4 | 2026-10-07 | LOCKED D-019 CrossAI Web Companion auth/session UX: type-first chat, Google/CrossAI identity authority, draft preservation, persistent private conversation, no mandatory external AI selection, user-triggered `mahu pindah` handoff, and explicit upstream AISYNC D-020/D-021 reconciliation requirement. |
