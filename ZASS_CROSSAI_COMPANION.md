@@ -1034,14 +1034,14 @@ Selecting a provider, quota model, or payment tier too early may hard-code produ
 | 3 | Temaya integration | PASS | Prove a peer assistant can use CrossAI Compatible without Companion | Requires Compatible contract mature enough for external assistant integration | **D-016 LOCKED — THIRD** |
 | 4 | Telegram | PASS | Add CrossAI-owned shared Telegram bot + persistent user binding after earlier boundaries are proven | Shared-bot/binding model LOCKED; exact webhook/runtime details remain implementation work | **D-016 + D-024 LOCKED — FOURTH** |
 
-**Current direction:** Sequence is owner-LOCKED. D-017 locks the Web Chat MVP vertical slice, D-018 its minimum SAVE contract, D-019 its Web auth/start UX, D-020 Core-owned event-driven private conversation continuity, D-021 the replaceable FREE/BYOK/POWER provider strategy, and D-022 routed CHAT/DECISION/DESIGN conversations with IDEA-only canonical SAVE in the MVP. The next unresolved design topic is **Q-007 external-channel binding mechanics**.
+**Current direction:** Sequence is owner-LOCKED. D-017 through D-024 now cover the Web Companion vertical slice, minimum SAVE contract, Web auth/start UX, Core-owned event-driven conversation continuity, FREE/BYOK/POWER provider freedom, routed CHAT/DECISION/PROJECT conversations, PROJECT/[DESIGN] naming, and persistent external-channel access through shared Telegram + BYOC WhatsApp. **Q-001 through Q-007 are resolved.**
 ---
 
 # 10. DESIGN — DRAFT 0.1
 
-**Status:** PENDING CONFIRMATION  
+**Status:** READY FOR OWNER DESIGN CONFIRMATION  
 **Design Progress:** 4/4 coverage — purpose / main flow / main elements / relevant LOCKED decisions  
-**Confirmation blocker:** Q-007 external-channel binding mechanics are still OPEN.
+**Confirmation blocker:** none from Q-001 through Q-007; explicit owner DESIGN confirmation remains required before action-plan slicing/execution.
 
 ## Purpose
 
