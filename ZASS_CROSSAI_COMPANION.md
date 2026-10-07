@@ -1151,6 +1151,103 @@ The exact AISYNC decision number, patch version, task/proof changes, and impleme
 
 This gate blocks implementation of the **affected cross-repository front-door contract**, not ordinary documentation review or further DESIGN/ACTION_PLAN refinement. No code, deployment, or production compatibility claim for the affected path should proceed ahead of the upstream reconciliation.
 
+## D-028 | LOCKED — Routed conversations branch by lineage, not transcript duplication
+
+**Decision:** When ordinary conversation work is promoted or routed into a dedicated `[IDEA]`, `[DECIDE]`, or `[DESIGN]` conversation, CrossAI creates a new stable Core-owned conversation identity linked to its source rather than copying/moving the entire source transcript.
+
+Canonical branching model:
+
+```text
+source conversation
+CONV-100
+   │
+   │ source lineage / triggering event(s)
+   ↓
+routed conversation
+CONV-101
+[IDEA] / [DECIDE] / [DESIGN]
+```
+
+The source conversation remains intact and independently resumable.
+
+### No transcript cloning
+
+CrossAI must not duplicate the full source transcript into the routed conversation merely to create continuity.
+
+Instead, the new routed conversation receives only the minimum seed context required to continue the routed work, such as:
+
+- source conversation identity;
+- relevant source event/message references;
+- route/promotion trigger;
+- user-confirmed candidate where applicable;
+- concise relevant context/open questions needed to resume.
+
+The exact storage representation remains implementation detail, but the semantic rule is:
+
+```text
+lineage + minimum seed context
+≠ full transcript copy
+```
+
+### Independent evolution after branching
+
+After the branch is created:
+
+```text
+CONV-100 continues independently
+CONV-101 continues independently
+```
+
+Later messages in one conversation do not silently propagate into the other. Cross-conversation context may be brought across only through an explicit/scoped Core retrieval or user action governed by the applicable context rules.
+
+This prevents two editable transcript copies from drifting while preserving traceable origin.
+
+### Route-specific behavior
+
+For an inferred signal, the routed conversation is created only after the applicable user confirmation required by D-022/D-026.
+
+For explicit user intent, Core may create the routed conversation directly:
+
+```text
+"saya nak pilih antara A dan B"
+→ new [DECIDE] conversation
+
+"saya nak reka offline IoT"
+→ new [DESIGN] conversation
+```
+
+For confirmed Idea promotion:
+
+```text
+source conversation
+      ↓
+SAVE_CONFIRMED_IDEA
+      ↓
+canonical Idea
+      ↕ linked
+new [IDEA] conversation
+```
+
+The canonical Idea, source conversation, and routed `[IDEA]` conversation remain distinct identities connected by lineage.
+
+### Avoid unnecessary re-branching
+
+If the user is already inside a conversation whose active route/domain matches the requested work, CrossAI should continue that same conversation rather than create another equivalent child conversation.
+
+A new routed conversation is warranted when the user intentionally branches/promotes work into a distinct route/domain or explicitly requests a separate thread.
+
+### Identity invariant
+
+```text
+source CONV identity
+≠ routed CONV identity
+≠ canonical promoted object identity
+```
+
+Titles and prefixes remain presentation metadata. Stable Core conversation IDs and canonical artifact IDs remain the actual identities.
+
+This decision refines D-020/D-022 without changing their Core-owned continuity or explicit-promotion authority.
+
 ---
 
 # 7. OPEN QUESTIONS
@@ -1221,6 +1318,10 @@ Selecting a provider, quota model, or payment tier too early may hard-code produ
 ## R-007 | MITIGATED BY D-027 — Cross-repository authority conflict
 
 Companion D-019 and current AISYNC D-020/D-021 encode conflicting Web-start provider-selection behavior. D-027 makes explicit AISYNC reconciliation and live merged verification a hard gate before affected Companion DO IT.
+
+## R-008 | MITIGATED BY D-028 — Routed-thread transcript drift
+
+Creating `[IDEA]`, `[DECIDE]`, or `[DESIGN]` threads by cloning full source transcripts would create competing editable histories. D-028 locks lineage-linked branching with minimum seed context and independent stable conversation identities.
 
 ---
 
@@ -1380,7 +1481,7 @@ The current Companion architecture decision set is ready for owner-controlled DE
 
 # 13. CHANGE CONTROL
 
-- Do not silently rewrite D-001 through D-027.
+- Do not silently rewrite D-001 through D-028.
 - A new finding may refine DESIGN or ACTION_PLAN.
 - A finding that conflicts with a LOCKED decision requires a new explicit decision.
 - Upstream AISYNC contract changes must be reconciled before Companion implementation claims compatibility.
@@ -1392,6 +1493,7 @@ The current Companion architecture decision set is ready for owner-controlled DE
 
 | Version | Date | Change |
 |---|---|---|
+| 0.1.13 | 2026-10-07 | LOCKED D-028 routed-conversation branching: new IDEA/DECIDE/DESIGN threads use distinct Core conversation IDs linked by lineage and minimum seed context rather than full transcript cloning; source and child evolve independently and matching-route conversations avoid unnecessary re-branching. |
 | 0.1.12 | 2026-10-07 | LOCKED D-027 AISYNC reconciliation gate: current AISYNC mandatory provider-selection behavior conflicts with Companion D-019; affected Web start/auth/provider-routing DO IT is blocked until an explicit owner-approved AISYNC refinement is merged and verified on AISYNC main. |
 | 0.1.11 | 2026-10-07 | LOCKED D-026 graceful Intelligence fallback: CrossAI Intelligence is optional for inferred semantic screening, explicit routing remains deterministic, inferred signals never silently auto-route when Intelligence is unavailable, and Companion/Core continuity remain usable. |
 | 0.1.10 | 2026-10-07 | LOCKED D-025 routing normalization: user-facing navigation is CHAT / DECISION / PROJECT while internal semantic/method routing remains DUMP / DECIDE / DESIGN; older visible DUMP/DESIGN wording is superseded without changing canonical promotion or conversation identity. |
