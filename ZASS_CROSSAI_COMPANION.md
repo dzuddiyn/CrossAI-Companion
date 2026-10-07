@@ -1088,6 +1088,69 @@ A failure or quota exhaustion in CrossAI Intelligence must not erase submitted m
 
 This decision does not require a specific CrossAI Intelligence provider/model. Its provider, model, queueing, retry, and later recovery behavior remain implementation/runtime design.
 
+## D-027 | LOCKED — AISYNC reconciliation is a hard gate before DO IT
+
+**Decision:** CrossAI Companion must not enter implementation of the affected Web start/auth/provider-routing flow while the authoritative AISYNC `main` branch still contains conflicting LOCKED behavior.
+
+The confirmed conflict is:
+
+```text
+AISYNC D-020 / D-021
+User MUST choose AI provider before GO / START
+        ≠
+Companion D-019
+Web Companion starts naturally without mandatory provider selection
+```
+
+This decision strengthens the reconciliation note already recorded in D-019.
+
+### Hard gate
+
+Before Companion moves into **DO IT** for any flow that depends on Web start, authentication continuation, provider selection, intent routing, or handoff:
+
+1. refresh authoritative AISYNC `main`;
+2. identify the still-applicable conflicting decisions/design/action-plan/task/proof wording;
+3. create an explicit owner-approved AISYNC refinement/superseding decision;
+4. update the affected AISYNC confirmed design/action-plan/task or proof surfaces consistently;
+5. merge that reconciliation into AISYNC `main`;
+6. verify the live merged state before claiming CrossAI Companion compatibility.
+
+Until those conditions are satisfied:
+
+```text
+Companion DESIGN / ACTION planning may continue
+but
+affected Companion DO IT = BLOCKED
+```
+
+### No silent precedence
+
+Neither repository may silently override the other.
+
+- Companion D-019 remains the locked Companion product direction.
+- Existing AISYNC D-020/D-021 remain historically authoritative inside AISYNC until explicitly refined/superseded there.
+- A Companion implementation must not simply ignore AISYNC.
+- AISYNC must not silently rewrite Companion D-019.
+- Compatibility may be claimed only after both repositories express a reconciled boundary.
+
+### Reconciliation target
+
+The intended reconciliation must preserve at minimum:
+
+- user-first natural-language entry;
+- Google/CrossAI identity authority;
+- draft preservation through authentication;
+- Core-owned private conversation continuity;
+- internal DUMP / DECIDE / DESIGN routing behind human-facing CHAT / DECISION / PROJECT surfaces;
+- provider freedom without making provider choice a mandatory first-click requirement for Web Companion;
+- explicit external handoff when the user chooses another AI app/provider.
+
+The exact AISYNC decision number, patch version, task/proof changes, and implementation sequence are determined when the reconciliation is executed against the then-current AISYNC `main`.
+
+### Scope
+
+This gate blocks implementation of the **affected cross-repository front-door contract**, not ordinary documentation review or further DESIGN/ACTION_PLAN refinement. No code, deployment, or production compatibility claim for the affected path should proceed ahead of the upstream reconciliation.
+
 ---
 
 # 7. OPEN QUESTIONS
@@ -1154,6 +1217,10 @@ Companion, CrossAI Intelligence, and Core continuity must remain separate failur
 ## R-006 | OPEN — Provider/commercial premature coupling
 
 Selecting a provider, quota model, or payment tier too early may hard-code product policy into architecture.
+
+## R-007 | MITIGATED BY D-027 — Cross-repository authority conflict
+
+Companion D-019 and current AISYNC D-020/D-021 encode conflicting Web-start provider-selection behavior. D-027 makes explicit AISYNC reconciliation and live merged verification a hard gate before affected Companion DO IT.
 
 ---
 
@@ -1313,7 +1380,7 @@ The current Companion architecture decision set is ready for owner-controlled DE
 
 # 13. CHANGE CONTROL
 
-- Do not silently rewrite D-001 through D-026.
+- Do not silently rewrite D-001 through D-027.
 - A new finding may refine DESIGN or ACTION_PLAN.
 - A finding that conflicts with a LOCKED decision requires a new explicit decision.
 - Upstream AISYNC contract changes must be reconciled before Companion implementation claims compatibility.
@@ -1325,6 +1392,7 @@ The current Companion architecture decision set is ready for owner-controlled DE
 
 | Version | Date | Change |
 |---|---|---|
+| 0.1.12 | 2026-10-07 | LOCKED D-027 AISYNC reconciliation gate: current AISYNC mandatory provider-selection behavior conflicts with Companion D-019; affected Web start/auth/provider-routing DO IT is blocked until an explicit owner-approved AISYNC refinement is merged and verified on AISYNC main. |
 | 0.1.11 | 2026-10-07 | LOCKED D-026 graceful Intelligence fallback: CrossAI Intelligence is optional for inferred semantic screening, explicit routing remains deterministic, inferred signals never silently auto-route when Intelligence is unavailable, and Companion/Core continuity remain usable. |
 | 0.1.10 | 2026-10-07 | LOCKED D-025 routing normalization: user-facing navigation is CHAT / DECISION / PROJECT while internal semantic/method routing remains DUMP / DECIDE / DESIGN; older visible DUMP/DESIGN wording is superseded without changing canonical promotion or conversation identity. |
 | 0.1.9 | 2026-10-07 | LOCKED D-024 external-channel model: first-time pairing is short-lived/single-use but successful binding persists; Telegram uses one CrossAI-owned shared bot, WhatsApp uses BYOC user-owned Meta/Cloud API connection, channel connection and human binding are separate, and CrossAI remains free-as-is with BYOC/BYOK for external capability/cost. |
