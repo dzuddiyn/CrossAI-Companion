@@ -954,6 +954,62 @@ No channel owns semantic memory. Once identity is resolved, all authorized chann
 
 CrossAI Web remains the richer account/browse/manage surface; Telegram or WhatsApp may become the user's normal conversational surface without needing to reproduce the full CrossAI Web tree UI.
 
+## D-025 | LOCKED — Normalize user-facing trees vs internal semantic routes
+
+**Decision:** CrossAI separates the user-facing navigation/tree labels from the internal semantic/method routing domains.
+
+User-facing tree/navigation labels are:
+
+```text
+CHAT
+DECISION
+PROJECT
+```
+
+Internal semantic/method routing domains are:
+
+```text
+DUMP
+DECIDE
+DESIGN
+```
+
+The mapping is:
+
+```text
+CHAT      ↔ DUMP
+DECISION  ↔ DECIDE
+PROJECT   ↔ DESIGN
+```
+
+This decision normalizes and supersedes older user-facing wording such as `DUMP tree` or visible `DESIGN tree` where those labels referred to ordinary-user navigation. The internal method/domain names remain valid for routing, lineage, diagnostics, advanced views, and method execution.
+
+Examples:
+
+```text
+CHAT
+├── ordinary conversation
+└── [IDEA] Offline IoT
+
+DECISION
+└── [DECIDE] Laptop
+
+PROJECT
+└── [DESIGN] Offline IoT
+```
+
+The prefixes `[IDEA]`, `[DECIDE]`, and `[DESIGN]` remain human-readable conversation labels. They do not change the underlying stable conversation identity or automatically create canonical Ideas, Decisions, or Projects.
+
+Core therefore understands:
+
+```text
+visible tree label
+≠ internal semantic route
+≠ canonical promoted object
+```
+
+This is a presentation/routing normalization only. It does not change the locked explicit-promotion, continuity, SAVE, provider, or channel-binding semantics.
+
 ---
 
 # 7. OPEN QUESTIONS
@@ -1179,7 +1235,7 @@ The current Companion architecture decision set is ready for owner-controlled DE
 
 # 13. CHANGE CONTROL
 
-- Do not silently rewrite D-001 through D-024.
+- Do not silently rewrite D-001 through D-025.
 - A new finding may refine DESIGN or ACTION_PLAN.
 - A finding that conflicts with a LOCKED decision requires a new explicit decision.
 - Upstream AISYNC contract changes must be reconciled before Companion implementation claims compatibility.
@@ -1191,6 +1247,7 @@ The current Companion architecture decision set is ready for owner-controlled DE
 
 | Version | Date | Change |
 |---|---|---|
+| 0.1.10 | 2026-10-07 | LOCKED D-025 routing normalization: user-facing navigation is CHAT / DECISION / PROJECT while internal semantic/method routing remains DUMP / DECIDE / DESIGN; older visible DUMP/DESIGN wording is superseded without changing canonical promotion or conversation identity. |
 | 0.1.9 | 2026-10-07 | LOCKED D-024 external-channel model: first-time pairing is short-lived/single-use but successful binding persists; Telegram uses one CrossAI-owned shared bot, WhatsApp uses BYOC user-owned Meta/Cloud API connection, channel connection and human binding are separate, and CrossAI remains free-as-is with BYOC/BYOK for external capability/cost. |
 | 0.1.8 | 2026-10-07 | LOCKED D-023 visible-tree refinement: PROJECT replaces visible DESIGN tree while child threads remain `[DESIGN]`; full Project exists only after explicit promotion to a Drive-first project space, followed by optional GitHub CREATE/LINK/NOT NOW. |
 | 0.1.7 | 2026-10-07 | LOCKED D-022 routed conversation orchestration: CHAT carries ordinary/[IDEA] conversations, DECISION carries [DECIDE], DESIGN remains the routed domain for [DESIGN] threads; explicit intent can route directly, IDEA canonical SAVE is MVP-complete, and canonical Decision SAVE/full Project creation are deferred. |
