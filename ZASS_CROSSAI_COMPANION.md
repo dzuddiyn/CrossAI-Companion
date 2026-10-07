@@ -326,6 +326,54 @@ Companion is not a public version of Temaya, and Temaya is not a Companion featu
 **Reason:** Web Chat proves the Companion → CrossAI Compatible → Core boundary with the least channel-specific complexity. WhatsApp is the next external consumer channel priority. Temaya then proves a peer assistant can integrate through CrossAI Compatible without becoming part of Companion. Telegram follows after those three stages.
 
 **Consequence:** The existing upstream AISYNC post-Production roadmap currently places Temaya before Companion MVP and Telegram before WhatsApp. That roadmap must be explicitly reconciled before cross-repository execution reaches those affected stages. This Companion decision does not silently rewrite AISYNC.
+## D-017 | LOCKED — Web Chat MVP component boundary
+
+**Decision:** The Web Chat MVP is designed as one end-to-end vertical slice containing three Companion-side components:
+
+```text
+1. Web Chat Adapter
+2. Companion Runtime
+3. CrossAI Compatible Client
+```
+
+These three components are designed together because all are required to prove the Companion → Core journey, but they do not need to be separate applications or deployments.
+
+Preferred MVP deployment shape:
+
+```text
+CrossAI Companion Runtime B
+│
+├── Web Chat Adapter
+├── Companion Runtime logic
+└── CrossAI Compatible Client
+        ↓
+   network/API boundary
+        ↓
+CrossAI Core Runtime A
+```
+
+**Boundary:**
+
+- **Web Chat Adapter** owns the chat UI/channel input-output surface.
+- **Companion Runtime** owns transient conversational/session orchestration, Companion AI calls, possible-idea surfacing, and explicit SAVE interaction.
+- **CrossAI Compatible Client** is the deterministic Companion-side connector that sends authorized requests to Core and consumes factual receipts.
+- **CrossAI Compatible receiver / Core-side contract implementation** remains under AISYNC / CrossAI Core authority and is not owned by the Companion repository.
+- None of the three Companion-side components may become canonical Ideas/Decisions/Projects or SAVE authority.
+
+**Build principle:** Design the three components together, then implement them as the thinnest reversible end-to-end slice rather than completing each subsystem independently before integration.
+
+Target slice:
+
+```text
+Web Chat
+→ Companion Runtime
+→ CrossAI Compatible Client
+→ CrossAI Core
+→ factual receipt
+→ Web Chat
+```
+
+**Reason:** This proves the actual product boundary with minimum architecture while preserving future replacement of Web Chat by WhatsApp/Telegram adapters without changing Core semantic authority.
 
 ---
 
@@ -342,9 +390,9 @@ Resolved by **D-016 | LOCKED**.
 4. Telegram
 ```
 
-## Q-002 | OPEN — Exact CrossAI Compatible v1 contract for Companion
+## Q-002 | OPEN — Exact CrossAI Compatible v1 contract for Web Chat MVP
 
-Need to define the minimum request/response contract required for:
+With D-017 locked, define the minimum request/response contract across the Companion-side Compatible Client ↔ Core-side Compatible receiver boundary for:
 
 - authorized identity;
 - idea candidate/confirmed SAVE;
@@ -425,14 +473,14 @@ Selecting a provider, quota model, or payment tier too early may hard-code produ
 | 3 | Temaya integration | PASS | Prove a peer assistant can use CrossAI Compatible without Companion | Requires Compatible contract mature enough for external assistant integration | **D-016 LOCKED — THIRD** |
 | 4 | Telegram | PASS | Add shared Telegram bot + binding after earlier boundaries are proven | Telegram webhook/binding implementation remains OPEN | **D-016 LOCKED — FOURTH** |
 
-**Current direction:** Sequence is owner-LOCKED. The next unresolved design topic is the minimum **CrossAI Compatible v1 contract** needed by Web Chat MVP.
+**Current direction:** Sequence is owner-LOCKED. D-017 also locks the Web Chat MVP as one vertical slice: Web Chat Adapter + Companion Runtime + CrossAI Compatible Client. The next unresolved design topic is the minimum **CrossAI Compatible v1 contract** needed across the Companion ↔ Core boundary.
 ---
 
 # 10. DESIGN — DRAFT 0.1
 
 **Status:** PENDING CONFIRMATION  
 **Design Progress:** 4/4 coverage — purpose / main flow / main elements / relevant LOCKED decisions  
-**Confirmation blocker:** Q-002 minimum CrossAI Compatible v1 contract for the Web Chat MVP is still OPEN.
+**Confirmation blocker:** Q-002 minimum CrossAI Compatible v1 contract across the D-017 Companion ↔ Core boundary is still OPEN.
 
 ## Purpose
 
@@ -501,15 +549,14 @@ same saved Idea visible in CrossAI Web
 
 ## Main elements
 
-1. Channel/UI adapter.
-2. Channel/user → CrossAI identity resolver.
-3. Private transient conversation/session scope.
-4. Companion conversational AI adapter.
-5. Possible-idea action surface.
-6. CrossAI Compatible client.
-7. Core-side authorization/governance.
-8. Canonical SAVE + factual receipt.
-9. CrossAI Web read/inspection of the same saved state.
+1. **Web Chat Adapter** — channel/UI input-output surface.
+2. **Companion Runtime** — private transient session, conversational AI orchestration, possible-idea surfacing, explicit SAVE interaction.
+3. **CrossAI Compatible Client** — deterministic Companion-side connector to Core.
+4. Channel/user → CrossAI identity resolution.
+5. Core-side CrossAI Compatible receiver.
+6. Core-side authorization/governance.
+7. Canonical SAVE + factual receipt.
+8. CrossAI Web read/inspection of the same saved state.
 
 ## Architecture invariants
 
@@ -563,7 +610,7 @@ DELIVERED not started
 
 Next design decision:
 
-> **Q-002 — Define the minimum CrossAI Compatible v1 contract required by the Web Chat MVP.**
+> **Q-002 — Define the minimum CrossAI Compatible v1 contract between the D-017 Companion-side Client and the Core-side Compatible receiver.**
 
 No implementation should begin until this boundary is sufficiently designed and owner-approved.
 
@@ -571,7 +618,7 @@ No implementation should begin until this boundary is sufficiently designed and 
 
 # 13. CHANGE CONTROL
 
-- Do not silently rewrite D-001 through D-016.
+- Do not silently rewrite D-001 through D-017.
 - A new finding may refine DESIGN or ACTION_PLAN.
 - A finding that conflicts with a LOCKED decision requires a new explicit decision.
 - Upstream AISYNC contract changes must be reconciled before Companion implementation claims compatibility.
@@ -583,6 +630,7 @@ No implementation should begin until this boundary is sufficiently designed and 
 
 | Version | Date | Change |
 |---|---|---|
+| 0.1.2 | 2026-10-07 | LOCKED D-017 Web Chat MVP component boundary: Web Chat Adapter + Companion Runtime + CrossAI Compatible Client as one Companion-side vertical slice; Core-side Compatible receiver remains AISYNC authority. |
 | 0.1.1 | 2026-10-07 | LOCKED D-016 delivery/integration sequence: Web Chat → WhatsApp → Temaya integration → Telegram; resolved Q-001, updated selection matrix, and advanced next design gate to Q-002 CrossAI Compatible v1 minimum contract. |
 | 0.1.0 | 2026-10-07 | Initialized CrossAI Companion project ZASS using ZASSIMPLE v0.3.0; imported owner-provided/PF-093 Companion locks, recorded open MVP/channel/auth questions, risks, selection matrix, and Draft Design 0.1. |
 
