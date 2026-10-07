@@ -312,19 +312,35 @@ Kerani AI ──────────┘
 
 Companion is not a public version of Temaya, and Temaya is not a Companion feature.
 
+## D-016 | LOCKED — Delivery / integration order
+
+**Decision:** Execute the current Companion-facing delivery sequence in this order:
+
+```text
+1. Web Chat
+2. WhatsApp
+3. Temaya integration
+4. Telegram
+```
+
+**Reason:** Web Chat proves the Companion → CrossAI Compatible → Core boundary with the least channel-specific complexity. WhatsApp is the next external consumer channel priority. Temaya then proves a peer assistant can integrate through CrossAI Compatible without becoming part of Companion. Telegram follows after those three stages.
+
+**Consequence:** The existing upstream AISYNC post-Production roadmap currently places Temaya before Companion MVP and Telegram before WhatsApp. That roadmap must be explicitly reconciled before cross-repository execution reaches those affected stages. This Companion decision does not silently rewrite AISYNC.
+
 ---
 
 # 7. OPEN QUESTIONS
 
-## Q-001 | OPEN — First MVP channel
+## Q-001 | RESOLVED — First MVP channel and delivery sequence
 
-Which channel should prove the first Companion vertical slice?
+Resolved by **D-016 | LOCKED**.
 
-- Web Chat
-- Telegram
-- WhatsApp
-
-Current recommendation from design review: **Web Chat first**, but this is **not LOCKED**.
+```text
+1. Web Chat
+2. WhatsApp
+3. Temaya integration
+4. Telegram
+```
 
 ## Q-002 | OPEN — Exact CrossAI Compatible v1 contract for Companion
 
@@ -400,23 +416,23 @@ Selecting a provider, quota model, or payment tier too early may hard-code produ
 
 # 9. CURRENT SELECTION MATRIX
 
-## Decision topic: first MVP channel
+## Decision topic: delivery / integration order
 
-| Option / Candidate | Must-have fit | Strength | Risk / Weakness | Evidence / Unknown | Status |
-|---|---|---|---|---|---|
-| Web Chat | PASS | Reuses CrossAI Web identity context; isolates the core conversation→SAVE boundary from external webhook/binding complexity | Does not prove external-channel account binding yet | Exact Web Companion auth/session contract still OPEN | **RECOMMENDED — OPEN** |
-| Telegram | PASS | Proves real external channel and binding early | Adds bot webhook, binding-code, replay/revoke, and delivery concerns to the first slice | Telegram binding architecture is directionally locked but implementation details remain OPEN | OPEN |
-| WhatsApp | PASS | Strong low-friction end-user channel target | Highest early provider/account/platform complexity | Exact WhatsApp API/account mechanism remains OPEN | OPEN / DEFERRED FOR FIRST SLICE |
+| Stage | Candidate | Must-have fit | Main purpose | Main risk / dependency | Status |
+|---:|---|---|---|---|---|
+| 1 | Web Chat | PASS | Prove Companion conversation → explicit SAVE → CrossAI Compatible → Core receipt | Exact Web auth/session + Compatible contract still OPEN | **D-016 LOCKED — FIRST** |
+| 2 | WhatsApp | PASS | Prove external consumer channel + verified account binding | WhatsApp API/account/provider mechanics remain OPEN | **D-016 LOCKED — SECOND** |
+| 3 | Temaya integration | PASS | Prove a peer assistant can use CrossAI Compatible without Companion | Requires Compatible contract mature enough for external assistant integration | **D-016 LOCKED — THIRD** |
+| 4 | Telegram | PASS | Add shared Telegram bot + binding after earlier boundaries are proven | Telegram webhook/binding implementation remains OPEN | **D-016 LOCKED — FOURTH** |
 
-**Current direction:** Web Chat is the smallest practical first slice, but no owner lock has been recorded yet.
-
+**Current direction:** Sequence is owner-LOCKED. The next unresolved design topic is the minimum **CrossAI Compatible v1 contract** needed by Web Chat MVP.
 ---
 
 # 10. DESIGN — DRAFT 0.1
 
 **Status:** PENDING CONFIRMATION  
 **Design Progress:** 4/4 coverage — purpose / main flow / main elements / relevant LOCKED decisions  
-**Confirmation blocker:** Q-001 first MVP channel is still OPEN.
+**Confirmation blocker:** Q-002 minimum CrossAI Compatible v1 contract for the Web Chat MVP is still OPEN.
 
 ## Purpose
 
@@ -547,15 +563,15 @@ DELIVERED not started
 
 Next design decision:
 
-> **Q-001 — Select and LOCK the first MVP channel.**
+> **Q-002 — Define the minimum CrossAI Compatible v1 contract required by the Web Chat MVP.**
 
-No implementation should begin until the relevant design decision is owner-approved.
+No implementation should begin until this boundary is sufficiently designed and owner-approved.
 
 ---
 
 # 13. CHANGE CONTROL
 
-- Do not silently rewrite D-001 through D-015.
+- Do not silently rewrite D-001 through D-016.
 - A new finding may refine DESIGN or ACTION_PLAN.
 - A finding that conflicts with a LOCKED decision requires a new explicit decision.
 - Upstream AISYNC contract changes must be reconciled before Companion implementation claims compatibility.
@@ -567,6 +583,7 @@ No implementation should begin until the relevant design decision is owner-appro
 
 | Version | Date | Change |
 |---|---|---|
+| 0.1.1 | 2026-10-07 | LOCKED D-016 delivery/integration sequence: Web Chat → WhatsApp → Temaya integration → Telegram; resolved Q-001, updated selection matrix, and advanced next design gate to Q-002 CrossAI Compatible v1 minimum contract. |
 | 0.1.0 | 2026-10-07 | Initialized CrossAI Companion project ZASS using ZASSIMPLE v0.3.0; imported owner-provided/PF-093 Companion locks, recorded open MVP/channel/auth questions, risks, selection matrix, and Draft Design 0.1. |
 
 ---
