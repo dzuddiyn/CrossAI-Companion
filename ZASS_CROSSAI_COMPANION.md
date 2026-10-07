@@ -1010,6 +1010,84 @@ visible tree label
 
 This is a presentation/routing normalization only. It does not change the locked explicit-promotion, continuity, SAVE, provider, or channel-binding semantics.
 
+## D-026 | LOCKED — Graceful fallback when CrossAI Intelligence is unavailable
+
+**Decision:** CrossAI Intelligence is an optional semantic-screening dependency, not a hard availability dependency for ordinary Companion conversation, Core continuity, explicit routing, or already-authorized deterministic SAVE operations.
+
+```text
+CrossAI Intelligence unavailable
+≠ Companion unavailable
+≠ Core continuity unavailable
+```
+
+### Explicit intent remains deterministic
+
+When the user expresses clear intent, CrossAI does not require probabilistic semantic screening before routing.
+
+Examples:
+
+```text
+"saya nak pilih antara..."
+→ DECIDE route
+
+"saya nak reka..."
+→ DESIGN route
+
+"save idea ini"
+→ explicit IDEA / SAVE flow
+```
+
+If identity, authorization, required payload, and Core governance checks are otherwise satisfied, explicit routing and the applicable deterministic Core operation may continue even when CrossAI Intelligence is unavailable.
+
+### Inferred signals degrade safely
+
+For non-explicit signals:
+
+```text
+Companion detects possible IDEA / DECIDE / DESIGN signal
+        ↓
+CrossAI Intelligence available?
+   ├─ YES → screen / normalize / relate / dedupe
+   │        → candidate route/promotion
+   │
+   └─ NO  → no silent auto-route
+            no silent semantic promotion
+            continue conversation or surface a tentative candidate
+```
+
+If Companion surfaces a tentative candidate while Intelligence is unavailable, the user may explicitly confirm the route. That confirmation becomes explicit user intent and Core may then route the conversation deterministically.
+
+### What is lost during degradation
+
+While CrossAI Intelligence is unavailable, CrossAI may temporarily lose or defer advisory features such as:
+
+- inferred semantic screening;
+- normalization assistance;
+- duplicate/relationship suggestions;
+- related-project suggestions;
+- richer semantic retrieval assistance.
+
+Those missing advisory capabilities must not be represented as successfully completed.
+
+### Availability boundary
+
+Companion AI, CrossAI Intelligence, and Core continuity remain separate failure domains:
+
+```text
+Companion AI
+= conversation inference
+
+CrossAI Intelligence
+= narrow semantic screening/advice
+
+CrossAI Core
+= identity + continuity + governance + factual SAVE truth
+```
+
+A failure or quota exhaustion in CrossAI Intelligence must not erase submitted messages, prevent access to existing authorized conversations, or convert factual Core state into UNKNOWN unless the Core operation itself is genuinely uncertain.
+
+This decision does not require a specific CrossAI Intelligence provider/model. Its provider, model, queueing, retry, and later recovery behavior remain implementation/runtime design.
+
 ---
 
 # 7. OPEN QUESTIONS
@@ -1069,9 +1147,9 @@ Companion must never say “Saved to CrossAI” based only on AI intent or trans
 
 Shared bots/services create serious cross-user risk if channel identity resolution or binding is incorrect.
 
-## R-005 | OPEN — Runtime coupling
+## R-005 | MITIGATED BY D-026 — Runtime / intelligence coupling
 
-If Companion shares too much runtime/quota with Core, Companion failure may affect continuity despite the locked separation.
+Companion, CrossAI Intelligence, and Core continuity must remain separate failure domains. D-026 locks that CrossAI Intelligence unavailability cannot by itself make ordinary Companion/Core continuity unavailable.
 
 ## R-006 | OPEN — Provider/commercial premature coupling
 
@@ -1235,7 +1313,7 @@ The current Companion architecture decision set is ready for owner-controlled DE
 
 # 13. CHANGE CONTROL
 
-- Do not silently rewrite D-001 through D-025.
+- Do not silently rewrite D-001 through D-026.
 - A new finding may refine DESIGN or ACTION_PLAN.
 - A finding that conflicts with a LOCKED decision requires a new explicit decision.
 - Upstream AISYNC contract changes must be reconciled before Companion implementation claims compatibility.
@@ -1247,6 +1325,7 @@ The current Companion architecture decision set is ready for owner-controlled DE
 
 | Version | Date | Change |
 |---|---|---|
+| 0.1.11 | 2026-10-07 | LOCKED D-026 graceful Intelligence fallback: CrossAI Intelligence is optional for inferred semantic screening, explicit routing remains deterministic, inferred signals never silently auto-route when Intelligence is unavailable, and Companion/Core continuity remain usable. |
 | 0.1.10 | 2026-10-07 | LOCKED D-025 routing normalization: user-facing navigation is CHAT / DECISION / PROJECT while internal semantic/method routing remains DUMP / DECIDE / DESIGN; older visible DUMP/DESIGN wording is superseded without changing canonical promotion or conversation identity. |
 | 0.1.9 | 2026-10-07 | LOCKED D-024 external-channel model: first-time pairing is short-lived/single-use but successful binding persists; Telegram uses one CrossAI-owned shared bot, WhatsApp uses BYOC user-owned Meta/Cloud API connection, channel connection and human binding are separate, and CrossAI remains free-as-is with BYOC/BYOK for external capability/cost. |
 | 0.1.8 | 2026-10-07 | LOCKED D-023 visible-tree refinement: PROJECT replaces visible DESIGN tree while child threads remain `[DESIGN]`; full Project exists only after explicit promotion to a Drive-first project space, followed by optional GitHub CREATE/LINK/NOT NOW. |
