@@ -388,6 +388,63 @@ Companion may display **Saved to CrossAI** only for a verified `SUCCESS`. `UNKNO
 **Provider boundary:** This contract is AI-provider-agnostic. Gemini API, OpenRouter API, or another provider belongs behind a separate Companion AI provider adapter and does not change the CrossAI Compatible SAVE contract.
 
 **Out of scope for this MVP contract:** decision SAVE, project creation/linking, scoped project read, handoff/return, channel binding, billing, and provider/commercial policy.
+## D-019 | LOCKED — CrossAI Web Companion auth/session UX and default entry
+
+**Decision:** CrossAI Web is the default Web Companion entry surface. The user is not required to choose an external AI app/provider before starting a Web Companion conversation.
+
+### User-first start
+
+```text
+User types naturally in the CrossAI Web chat box
+        ↓ SEND
+authenticated?
+  ├─ YES → continue
+  └─ NO
+        ↓
+preserve the draft
+        ↓
+Sign in with Google
+        ↓
+CrossAI Core resolves/creates the authorized CrossAI user identity
+        ↓
+create/load the user's private CrossAI conversation
+        ↓
+continue the chat in Web Companion
+```
+
+Google/CrossAI authentication remains the identity authority. Companion must not create a parallel username/password account system and must not trust a browser-supplied `crossai_user_id` as identity proof.
+
+### Conversation continuity
+
+A real Web Companion conversation is owned by the authenticated CrossAI user and must be persistent/recoverable across normal accidental interruption such as refresh, closing the tab/window, browser restart, or temporary Internet loss. `SAVE IDEA` is not the mechanism for preserving chat continuity.
+
+```text
+authenticated CrossAI user
+        ↓ owns
+private CrossAI conversation
+        ↓ optionally promotes
+canonical CrossAI Idea after explicit SAVE
+```
+
+Conversation persistence does **not** itself promote chat content into canonical Ideas/Decisions/Projects. Exact retention duration, deletion policy, and storage lifecycle remain Q-004.
+
+### No mandatory external AI selection
+
+For the Web Companion MVP, the visible product default is CrossAI Companion. The user does not need to choose Gemini, ChatGPT, or another external AI app before the first SEND.
+
+At the beginning of a new Companion session, the chat must inform the user in plain language that they may move to another AI app at any time, for example:
+
+> **Anda boleh pindah ke aplikasi AI lain pada bila-bila masa. Sebut sahaja “mahu pindah”, dan sistem akan sediakan perpindahan.**
+
+When the user asks to move (including the natural phrase `mahu pindah`), CrossAI prepares the appropriate transfer/handoff. The transfer mechanism must preserve authorized identity/continuity boundaries and must not falsely claim automatic transfer where the target app only supports copy/paste or another fallback.
+
+### Provider boundary
+
+The underlying Companion inference provider (for example Gemini API or OpenRouter) is an implementation detail of Companion Runtime and is not the same thing as the user's optional decision to move the conversation to another AI app.
+
+### Upstream AISYNC reconciliation
+
+This decision intentionally differs from current AISYNC D-020/D-021, which require explicit AI-provider selection before GO/START. D-022 draft-preservation/auth behavior remains compatible. Before the affected CrossAI Web production flow is implemented, AISYNC D-020/D-021 and related DESIGN/ACTION_PLAN/T-020 evidence must be explicitly reconciled. This Companion decision does not silently rewrite AISYNC.
 
 ---
 
@@ -408,9 +465,9 @@ Resolved by **D-016 | LOCKED**.
 
 Resolved by **D-018 | LOCKED**.
 
-## Q-003 | OPEN — Companion ↔ CrossAI Web/Core auth/session contract
+## Q-003 | RESOLVED — Companion ↔ CrossAI Web/Core auth/session contract
 
-Need the smallest deterministic authorization model that allows Web Companion use without duplicating Core identity authority.
+Resolved by **D-019 | LOCKED**: Google/CrossAI auth remains Core identity authority; draft is preserved through auth; authenticated user owns a persistent private conversation; Web Companion is the default entry without mandatory external AI-app selection; external transfer remains user-triggered.
 
 ## Q-004 | OPEN — Transient conversation/session retention
 
@@ -489,7 +546,7 @@ Selecting a provider, quota model, or payment tier too early may hard-code produ
 
 **Status:** PENDING CONFIRMATION  
 **Design Progress:** 4/4 coverage — purpose / main flow / main elements / relevant LOCKED decisions  
-**Confirmation blocker:** Q-003 Companion ↔ CrossAI Web/Core auth/session contract is still OPEN.
+**Confirmation blocker:** Q-004 transient/private conversation retention lifecycle is still OPEN.
 
 ## Purpose
 
@@ -619,7 +676,7 @@ DELIVERED not started
 
 Next design decision:
 
-> **Q-003 — Define the minimum Companion ↔ CrossAI Web/Core auth/session contract.**
+> **Q-004 — Define the private conversation retention, deletion, and recovery lifecycle without turning conversation storage into canonical Idea/Project authority.**
 
 No implementation should begin until this boundary is sufficiently designed and owner-approved.
 
@@ -627,7 +684,7 @@ No implementation should begin until this boundary is sufficiently designed and 
 
 # 13. CHANGE CONTROL
 
-- Do not silently rewrite D-001 through D-018.
+- Do not silently rewrite D-001 through D-019.
 - A new finding may refine DESIGN or ACTION_PLAN.
 - A finding that conflicts with a LOCKED decision requires a new explicit decision.
 - Upstream AISYNC contract changes must be reconciled before Companion implementation claims compatibility.
@@ -639,6 +696,7 @@ No implementation should begin until this boundary is sufficiently designed and 
 
 | Version | Date | Change |
 |---|---|---|
+| 0.1.4 | 2026-10-07 | LOCKED D-019 CrossAI Web Companion auth/session UX: type-first chat, Google/CrossAI identity authority, draft preservation, persistent private conversation, no mandatory external AI selection, user-triggered `mahu pindah` handoff, and explicit upstream AISYNC D-020/D-021 reconciliation requirement. |
 | 0.1.3 | 2026-10-07 | LOCKED D-018 minimum Compatible write contract for Web Chat MVP: SAVE_CONFIRMED_IDEA with verified receipt semantics; provider choice remains separate and provider-agnostic at this boundary. |
 | 0.1.2 | 2026-10-07 | LOCKED D-017 Web Chat MVP component boundary: Web Chat Adapter + Companion Runtime + CrossAI Compatible Client as one Companion-side vertical slice; Core-side Compatible receiver remains AISYNC authority. |
 | 0.1.1 | 2026-10-07 | LOCKED D-016 delivery/integration sequence: Web Chat → WhatsApp → Temaya integration → Telegram; resolved Q-001, updated selection matrix, and advanced next design gate to Q-002 CrossAI Compatible v1 minimum contract. |
