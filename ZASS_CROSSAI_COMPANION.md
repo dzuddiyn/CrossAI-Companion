@@ -503,6 +503,93 @@ Deleting a conversation does not automatically delete any canonical Idea, Decisi
 
 Durable user-owned Google Drive remains the locked future default storage direction for ordinary user content. D-020 locks the conversation lifecycle and authority boundary, not the exact physical folder/file/database representation.
 
+## D-021 | LOCKED — Provider freedom with FREE / BYOK / POWER modes
+
+**Decision:** CrossAI Companion uses a replaceable AI Provider Adapter and must preserve user freedom to change AI providers/models without changing CrossAI conversation identity, Core continuity, or SAVE authority.
+
+The provider strategy supports three runtime modes from the same architecture:
+
+```text
+FREE
+BYOK
+POWER
+```
+
+These modes are inference/cost/privacy choices, not different continuity systems.
+
+### FREE mode — first implementation target
+
+The first Companion provider experiment uses **OpenRouter free API access** through a CrossAI-controlled router/allowlist.
+
+CrossAI must not rely on an unrestricted/random free-model router as semantic authority. The Companion router selects only from an explicit, replaceable allowlist of approved free model IDs and, where applicable, approved upstream providers. Exact model/provider names are runtime configuration and are not architecture locks.
+
+OpenRouter may provide transport/provider failover inside those approved bounds. CrossAI must preserve factual provider/model execution metadata for each assistant turn when available.
+
+**Gemini Free Tier remains an allowed FREE-mode alternative/fallback**, not a permanent primary architecture dependency. Because free-provider terms and data-use policies can differ and change, the user must receive clear disclosure that FREE inference may be processed under provider terms that are not suitable for every private/sensitive use case. A user who does not accept those terms should not use that FREE provider/mode.
+
+CrossAI itself is not assumed to be a paid product merely because provider-paid options may exist later.
+
+### BYOK mode
+
+The same Provider Adapter must support a future **Bring Your Own Key / user-authorized provider credential** mode without changing Core continuity semantics.
+
+BYOK may use OpenRouter-supported provider credentials or another direct-provider adapter where appropriate. Provider credentials remain protected runtime secrets and must never become conversation content, browser-visible persistence, or Core semantic state.
+
+Where privacy/data-policy controls are available, BYOK/provider routing may apply explicit provider/model allowlists, data-collection restrictions, ZDR requirements, or equivalent controls. Exact credential UX, storage and revocation mechanics remain implementation/security design.
+
+### POWER mode
+
+The same Provider Adapter must support a future **POWER** mode for stronger/paid inference funded by the user, CrossAI credits/plan, or another explicitly selected commercial mechanism.
+
+POWER changes model/provider/cost capability only. It must not receive stronger semantic authority than FREE or BYOK.
+
+### Provider/model independence
+
+Exact model IDs are runtime configuration because model rosters, names, packages, quotas and migration schedules change quickly.
+
+```text
+provider/model changes
+≠ conversation identity changes
+≠ Core continuity changes
+≠ canonical SAVE authority changes
+```
+
+CrossAI Core remains the authoritative transcript/context store. Companion sends only the minimum scoped context needed for current inference. Provider-hosted chat/session memory must not become CrossAI continuity authority.
+
+### Routing and privacy boundary
+
+CrossAI-controlled routing policy must be explicit and replaceable:
+
+```text
+CrossAI approved mode/policy
+        ↓
+approved model allowlist
+        ↓
+approved provider allowlist / privacy constraints where supported
+        ↓
+Provider Adapter
+        ↓
+inference provider
+```
+
+Unrestricted provider/model selection by an external router is not the default Companion behavior.
+
+FREE mode may have lower quotas, changing model availability, weaker privacy terms or temporary unavailability. Those limitations must be surfaced truthfully rather than hidden.
+
+### Execution provenance
+
+Each completed/interrupted assistant turn should retain minimum factual execution metadata when available, such as:
+
+```text
+provider
+model
+mode = FREE | BYOK | POWER
+completion status
+fallback/routing metadata where relevant
+```
+
+This metadata is for factual provenance/debugging and does not make the AI provider a continuity or semantic authority.
+
 ---
 
 # 7. OPEN QUESTIONS
@@ -530,9 +617,9 @@ Resolved by **D-019 | LOCKED**: Google/CrossAI auth remains Core identity author
 
 Resolved by **D-020 | LOCKED**: Core owns durable conversation continuity; persistence is event-driven per committed turn; resumable conversations appear in the user's DUMP tree; context is conversation-scoped by default; archive/delete and tombstone behavior remain distinct from canonical SAVE/promotion.
 
-## Q-005 | OPEN — Companion AI provider/model
+## Q-005 | RESOLVED — Companion AI provider/model strategy
 
-Provider/commercial selection is intentionally deferred.
+Resolved by **D-021 | LOCKED**: one replaceable Provider Adapter supports FREE / BYOK / POWER. FREE begins with a CrossAI-controlled allowlist over OpenRouter free API access, with Gemini Free as an allowed alternative/fallback; exact models/providers remain runtime configuration and provider privacy/terms must be disclosed truthfully.
 
 ## Q-006 | OPEN — Exact idea-detection orchestration
 
@@ -590,14 +677,14 @@ Selecting a provider, quota model, or payment tier too early may hard-code produ
 | 3 | Temaya integration | PASS | Prove a peer assistant can use CrossAI Compatible without Companion | Requires Compatible contract mature enough for external assistant integration | **D-016 LOCKED — THIRD** |
 | 4 | Telegram | PASS | Add shared Telegram bot + binding after earlier boundaries are proven | Telegram webhook/binding implementation remains OPEN | **D-016 LOCKED — FOURTH** |
 
-**Current direction:** Sequence is owner-LOCKED. D-017 locks the Web Chat MVP vertical slice, D-018 its minimum SAVE contract, D-019 its Web auth/start UX, and D-020 Core-owned event-driven private conversation continuity. The next unresolved design topic is **Q-005 Companion AI provider/model**.
+**Current direction:** Sequence is owner-LOCKED. D-017 locks the Web Chat MVP vertical slice, D-018 its minimum SAVE contract, D-019 its Web auth/start UX, D-020 Core-owned event-driven private conversation continuity, and D-021 the replaceable FREE/BYOK/POWER provider strategy. The next unresolved design topic is **Q-006 idea-detection orchestration**.
 ---
 
 # 10. DESIGN — DRAFT 0.1
 
 **Status:** PENDING CONFIRMATION  
 **Design Progress:** 4/4 coverage — purpose / main flow / main elements / relevant LOCKED decisions  
-**Confirmation blocker:** Q-005 Companion AI provider/model selection is still OPEN.
+**Confirmation blocker:** Q-006 exact idea-detection orchestration is still OPEN.
 
 ## Purpose
 
@@ -727,7 +814,7 @@ DELIVERED not started
 
 Next design decision:
 
-> **Q-005 — Define the Companion AI provider/model strategy without coupling provider choice to Core continuity authority.**
+> **Q-006 — Define exact idea-detection orchestration between Companion AI and Core-side CrossAI Intelligence while preserving explicit user-controlled promotion.**
 
 No implementation should begin until this boundary is sufficiently designed and owner-approved.
 
@@ -735,7 +822,7 @@ No implementation should begin until this boundary is sufficiently designed and 
 
 # 13. CHANGE CONTROL
 
-- Do not silently rewrite D-001 through D-020.
+- Do not silently rewrite D-001 through D-021.
 - A new finding may refine DESIGN or ACTION_PLAN.
 - A finding that conflicts with a LOCKED decision requires a new explicit decision.
 - Upstream AISYNC contract changes must be reconciled before Companion implementation claims compatibility.
@@ -747,6 +834,7 @@ No implementation should begin until this boundary is sufficiently designed and 
 
 | Version | Date | Change |
 |---|---|---|
+| 0.1.6 | 2026-10-07 | LOCKED D-021 provider freedom strategy: replaceable Provider Adapter with FREE/BYOK/POWER modes; FREE starts with CrossAI-controlled OpenRouter free allowlist, Gemini Free remains alternative/fallback, privacy/terms disclosed, and exact models/providers remain runtime configuration. |
 | 0.1.5 | 2026-10-07 | LOCKED D-020 Core-owned private conversation continuity: stable resumable conversation identity in DUMP tree, event-driven turn persistence, Core-owned transcript/context/recovery lifecycle, conversation-scoped context, archive/delete+tombstone boundary, and Google Drive as future durable user-owned storage direction. |
 | 0.1.4 | 2026-10-07 | LOCKED D-019 CrossAI Web Companion auth/session UX: type-first chat, Google/CrossAI identity authority, draft preservation, persistent private conversation, no mandatory external AI selection, user-triggered `mahu pindah` handoff, and explicit upstream AISYNC D-020/D-021 reconciliation requirement. |
 | 0.1.3 | 2026-10-07 | LOCKED D-018 minimum Compatible write contract for Web Chat MVP: SAVE_CONFIRMED_IDEA with verified receipt semantics; provider choice remains separate and provider-agnostic at this boundary. |
