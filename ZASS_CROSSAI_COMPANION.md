@@ -446,6 +446,63 @@ The underlying Companion inference provider (for example Gemini API or OpenRoute
 
 This decision intentionally differs from current AISYNC D-020/D-021, which require explicit AI-provider selection before GO/START. D-022 draft-preservation/auth behavior remains compatible. Before the affected CrossAI Web production flow is implemented, AISYNC D-020/D-021 and related DESIGN/ACTION_PLAN/T-020 evidence must be explicitly reconciled. This Companion decision does not silently rewrite AISYNC.
 
+## D-020 | LOCKED — Core-owned private conversation continuity
+
+**Decision:** CrossAI Core owns durable private conversation persistence and continuity. Companion owns conversational inference and channel interaction only, and passes factual conversation events to Core.
+
+Each authenticated conversation receives a stable conversation/thread identity and appears as a resumable entry in the user's DUMP tree. The display title is mutable presentation metadata; the stable conversation/thread ID is the identity.
+
+### Event-driven persistence
+
+Conversation persistence is primarily event-driven per committed turn:
+
+```text
+USER_MESSAGE_SUBMITTED
+        ↓
+Companion → Core
+        ↓
+Core persists + acknowledges
+        ↓
+Companion invokes Gemini/OpenRouter/other provider
+
+ASSISTANT_MESSAGE_COMPLETED / INTERRUPTED
+        ↓
+Companion → Core
+        ↓
+Core records factual assistant-turn state
+```
+
+A submitted user message must be persisted and acknowledged by Core before AI inference begins. Companion does not persist every streamed token as durable conversation state. Time-driven processing may later be used for reliability checkpoints or housekeeping, but it is not the primary conversation-save mechanism.
+
+### Core continuity authority
+
+Core owns:
+
+- transcript persistence;
+- conversation title/indexing for the DUMP tree;
+- minimum derived continuity context required for retrieval/resume;
+- stable identity and revision/recovery mechanics;
+- archive/reopen/delete lifecycle;
+- retrieval and resumable conversation state.
+
+Companion passes conversation data/events and must not maintain a competing durable conversation authority.
+
+Core may determine the persistence/continuity representation required to resume the conversation, but automatic conversation persistence must not silently promote chat content into canonical Ideas, Decisions, or Projects. Those require the applicable explicit user-controlled SAVE/governance flow.
+
+### Context scope and privacy
+
+Derived conversation context is scoped to its conversation by default. Context from one conversation must not silently become a global user profile or be injected into unrelated conversations. Any future cross-conversation retrieval/memory behavior requires an explicit scoped design.
+
+### Delete / archive boundary
+
+Archive is not privacy deletion. Explicit conversation deletion removes the conversation transcript, continuity context, search/index projection, and related derived caches. A minimal content-free tombstone may remain only to prevent stale resurrection.
+
+Deleting a conversation does not automatically delete any canonical Idea, Decision, or Project that the user previously promoted from that conversation, and deleting a promoted canonical object does not automatically delete the originating conversation.
+
+### Storage direction
+
+Durable user-owned Google Drive remains the locked future default storage direction for ordinary user content. D-020 locks the conversation lifecycle and authority boundary, not the exact physical folder/file/database representation.
+
 ---
 
 # 7. OPEN QUESTIONS
@@ -469,15 +526,9 @@ Resolved by **D-018 | LOCKED**.
 
 Resolved by **D-019 | LOCKED**: Google/CrossAI auth remains Core identity authority; draft is preserved through auth; authenticated user owns a persistent private conversation; Web Companion is the default entry without mandatory external AI-app selection; external transfer remains user-triggered.
 
-## Q-004 | OPEN — Transient conversation/session retention
+## Q-004 | RESOLVED — Core-owned private conversation continuity
 
-Need rules for:
-
-- session lifetime;
-- deletion;
-- privacy;
-- what remains temporary;
-- what may be intentionally promoted into CrossAI.
+Resolved by **D-020 | LOCKED**: Core owns durable conversation continuity; persistence is event-driven per committed turn; resumable conversations appear in the user's DUMP tree; context is conversation-scoped by default; archive/delete and tombstone behavior remain distinct from canonical SAVE/promotion.
 
 ## Q-005 | OPEN — Companion AI provider/model
 
@@ -539,14 +590,14 @@ Selecting a provider, quota model, or payment tier too early may hard-code produ
 | 3 | Temaya integration | PASS | Prove a peer assistant can use CrossAI Compatible without Companion | Requires Compatible contract mature enough for external assistant integration | **D-016 LOCKED — THIRD** |
 | 4 | Telegram | PASS | Add shared Telegram bot + binding after earlier boundaries are proven | Telegram webhook/binding implementation remains OPEN | **D-016 LOCKED — FOURTH** |
 
-**Current direction:** Sequence is owner-LOCKED. D-017 also locks the Web Chat MVP as one vertical slice: Web Chat Adapter + Companion Runtime + CrossAI Compatible Client. The next unresolved design topic is the minimum **CrossAI Compatible v1 contract** needed across the Companion ↔ Core boundary.
+**Current direction:** Sequence is owner-LOCKED. D-017 locks the Web Chat MVP vertical slice, D-018 its minimum SAVE contract, D-019 its Web auth/start UX, and D-020 Core-owned event-driven private conversation continuity. The next unresolved design topic is **Q-005 Companion AI provider/model**.
 ---
 
 # 10. DESIGN — DRAFT 0.1
 
 **Status:** PENDING CONFIRMATION  
 **Design Progress:** 4/4 coverage — purpose / main flow / main elements / relevant LOCKED decisions  
-**Confirmation blocker:** Q-004 transient/private conversation retention lifecycle is still OPEN.
+**Confirmation blocker:** Q-005 Companion AI provider/model selection is still OPEN.
 
 ## Purpose
 
@@ -676,7 +727,7 @@ DELIVERED not started
 
 Next design decision:
 
-> **Q-004 — Define the private conversation retention, deletion, and recovery lifecycle without turning conversation storage into canonical Idea/Project authority.**
+> **Q-005 — Define the Companion AI provider/model strategy without coupling provider choice to Core continuity authority.**
 
 No implementation should begin until this boundary is sufficiently designed and owner-approved.
 
@@ -684,7 +735,7 @@ No implementation should begin until this boundary is sufficiently designed and 
 
 # 13. CHANGE CONTROL
 
-- Do not silently rewrite D-001 through D-019.
+- Do not silently rewrite D-001 through D-020.
 - A new finding may refine DESIGN or ACTION_PLAN.
 - A finding that conflicts with a LOCKED decision requires a new explicit decision.
 - Upstream AISYNC contract changes must be reconciled before Companion implementation claims compatibility.
@@ -696,6 +747,7 @@ No implementation should begin until this boundary is sufficiently designed and 
 
 | Version | Date | Change |
 |---|---|---|
+| 0.1.5 | 2026-10-07 | LOCKED D-020 Core-owned private conversation continuity: stable resumable conversation identity in DUMP tree, event-driven turn persistence, Core-owned transcript/context/recovery lifecycle, conversation-scoped context, archive/delete+tombstone boundary, and Google Drive as future durable user-owned storage direction. |
 | 0.1.4 | 2026-10-07 | LOCKED D-019 CrossAI Web Companion auth/session UX: type-first chat, Google/CrossAI identity authority, draft preservation, persistent private conversation, no mandatory external AI selection, user-triggered `mahu pindah` handoff, and explicit upstream AISYNC D-020/D-021 reconciliation requirement. |
 | 0.1.3 | 2026-10-07 | LOCKED D-018 minimum Compatible write contract for Web Chat MVP: SAVE_CONFIRMED_IDEA with verified receipt semantics; provider choice remains separate and provider-agnostic at this boundary. |
 | 0.1.2 | 2026-10-07 | LOCKED D-017 Web Chat MVP component boundary: Web Chat Adapter + Companion Runtime + CrossAI Compatible Client as one Companion-side vertical slice; Core-side Compatible receiver remains AISYNC authority. |
