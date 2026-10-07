@@ -954,6 +954,300 @@ No channel owns semantic memory. Once identity is resolved, all authorized chann
 
 CrossAI Web remains the richer account/browse/manage surface; Telegram or WhatsApp may become the user's normal conversational surface without needing to reproduce the full CrossAI Web tree UI.
 
+## D-025 | LOCKED — Normalize user-facing trees vs internal semantic routes
+
+**Decision:** CrossAI separates the user-facing navigation/tree labels from the internal semantic/method routing domains.
+
+User-facing tree/navigation labels are:
+
+```text
+CHAT
+DECISION
+PROJECT
+```
+
+Internal semantic/method routing domains are:
+
+```text
+DUMP
+DECIDE
+DESIGN
+```
+
+The mapping is:
+
+```text
+CHAT      ↔ DUMP
+DECISION  ↔ DECIDE
+PROJECT   ↔ DESIGN
+```
+
+This decision normalizes and supersedes older user-facing wording such as `DUMP tree` or visible `DESIGN tree` where those labels referred to ordinary-user navigation. The internal method/domain names remain valid for routing, lineage, diagnostics, advanced views, and method execution.
+
+Examples:
+
+```text
+CHAT
+├── ordinary conversation
+└── [IDEA] Offline IoT
+
+DECISION
+└── [DECIDE] Laptop
+
+PROJECT
+└── [DESIGN] Offline IoT
+```
+
+The prefixes `[IDEA]`, `[DECIDE]`, and `[DESIGN]` remain human-readable conversation labels. They do not change the underlying stable conversation identity or automatically create canonical Ideas, Decisions, or Projects.
+
+Core therefore understands:
+
+```text
+visible tree label
+≠ internal semantic route
+≠ canonical promoted object
+```
+
+This is a presentation/routing normalization only. It does not change the locked explicit-promotion, continuity, SAVE, provider, or channel-binding semantics.
+
+## D-026 | LOCKED — Graceful fallback when CrossAI Intelligence is unavailable
+
+**Decision:** CrossAI Intelligence is an optional semantic-screening dependency, not a hard availability dependency for ordinary Companion conversation, Core continuity, explicit routing, or already-authorized deterministic SAVE operations.
+
+```text
+CrossAI Intelligence unavailable
+≠ Companion unavailable
+≠ Core continuity unavailable
+```
+
+### Explicit intent remains deterministic
+
+When the user expresses clear intent, CrossAI does not require probabilistic semantic screening before routing.
+
+Examples:
+
+```text
+"saya nak pilih antara..."
+→ DECIDE route
+
+"saya nak reka..."
+→ DESIGN route
+
+"save idea ini"
+→ explicit IDEA / SAVE flow
+```
+
+If identity, authorization, required payload, and Core governance checks are otherwise satisfied, explicit routing and the applicable deterministic Core operation may continue even when CrossAI Intelligence is unavailable.
+
+### Inferred signals degrade safely
+
+For non-explicit signals:
+
+```text
+Companion detects possible IDEA / DECIDE / DESIGN signal
+        ↓
+CrossAI Intelligence available?
+   ├─ YES → screen / normalize / relate / dedupe
+   │        → candidate route/promotion
+   │
+   └─ NO  → no silent auto-route
+            no silent semantic promotion
+            continue conversation or surface a tentative candidate
+```
+
+If Companion surfaces a tentative candidate while Intelligence is unavailable, the user may explicitly confirm the route. That confirmation becomes explicit user intent and Core may then route the conversation deterministically.
+
+### What is lost during degradation
+
+While CrossAI Intelligence is unavailable, CrossAI may temporarily lose or defer advisory features such as:
+
+- inferred semantic screening;
+- normalization assistance;
+- duplicate/relationship suggestions;
+- related-project suggestions;
+- richer semantic retrieval assistance.
+
+Those missing advisory capabilities must not be represented as successfully completed.
+
+### Availability boundary
+
+Companion AI, CrossAI Intelligence, and Core continuity remain separate failure domains:
+
+```text
+Companion AI
+= conversation inference
+
+CrossAI Intelligence
+= narrow semantic screening/advice
+
+CrossAI Core
+= identity + continuity + governance + factual SAVE truth
+```
+
+A failure or quota exhaustion in CrossAI Intelligence must not erase submitted messages, prevent access to existing authorized conversations, or convert factual Core state into UNKNOWN unless the Core operation itself is genuinely uncertain.
+
+This decision does not require a specific CrossAI Intelligence provider/model. Its provider, model, queueing, retry, and later recovery behavior remain implementation/runtime design.
+
+## D-027 | LOCKED — AISYNC reconciliation is a hard gate before DO IT
+
+**Decision:** CrossAI Companion must not enter implementation of the affected Web start/auth/provider-routing flow while the authoritative AISYNC `main` branch still contains conflicting LOCKED behavior.
+
+The confirmed conflict is:
+
+```text
+AISYNC D-020 / D-021
+User MUST choose AI provider before GO / START
+        ≠
+Companion D-019
+Web Companion starts naturally without mandatory provider selection
+```
+
+This decision strengthens the reconciliation note already recorded in D-019.
+
+### Hard gate
+
+Before Companion moves into **DO IT** for any flow that depends on Web start, authentication continuation, provider selection, intent routing, or handoff:
+
+1. refresh authoritative AISYNC `main`;
+2. identify the still-applicable conflicting decisions/design/action-plan/task/proof wording;
+3. create an explicit owner-approved AISYNC refinement/superseding decision;
+4. update the affected AISYNC confirmed design/action-plan/task or proof surfaces consistently;
+5. merge that reconciliation into AISYNC `main`;
+6. verify the live merged state before claiming CrossAI Companion compatibility.
+
+Until those conditions are satisfied:
+
+```text
+Companion DESIGN / ACTION planning may continue
+but
+affected Companion DO IT = BLOCKED
+```
+
+### No silent precedence
+
+Neither repository may silently override the other.
+
+- Companion D-019 remains the locked Companion product direction.
+- Existing AISYNC D-020/D-021 remain historically authoritative inside AISYNC until explicitly refined/superseded there.
+- A Companion implementation must not simply ignore AISYNC.
+- AISYNC must not silently rewrite Companion D-019.
+- Compatibility may be claimed only after both repositories express a reconciled boundary.
+
+### Reconciliation target
+
+The intended reconciliation must preserve at minimum:
+
+- user-first natural-language entry;
+- Google/CrossAI identity authority;
+- draft preservation through authentication;
+- Core-owned private conversation continuity;
+- internal DUMP / DECIDE / DESIGN routing behind human-facing CHAT / DECISION / PROJECT surfaces;
+- provider freedom without making provider choice a mandatory first-click requirement for Web Companion;
+- explicit external handoff when the user chooses another AI app/provider.
+
+The exact AISYNC decision number, patch version, task/proof changes, and implementation sequence are determined when the reconciliation is executed against the then-current AISYNC `main`.
+
+### Scope
+
+This gate blocks implementation of the **affected cross-repository front-door contract**, not ordinary documentation review or further DESIGN/ACTION_PLAN refinement. No code, deployment, or production compatibility claim for the affected path should proceed ahead of the upstream reconciliation.
+
+## D-028 | LOCKED — Routed conversations branch by lineage, not transcript duplication
+
+**Decision:** When ordinary conversation work is promoted or routed into a dedicated `[IDEA]`, `[DECIDE]`, or `[DESIGN]` conversation, CrossAI creates a new stable Core-owned conversation identity linked to its source rather than copying/moving the entire source transcript.
+
+Canonical branching model:
+
+```text
+source conversation
+CONV-100
+   │
+   │ source lineage / triggering event(s)
+   ↓
+routed conversation
+CONV-101
+[IDEA] / [DECIDE] / [DESIGN]
+```
+
+The source conversation remains intact and independently resumable.
+
+### No transcript cloning
+
+CrossAI must not duplicate the full source transcript into the routed conversation merely to create continuity.
+
+Instead, the new routed conversation receives only the minimum seed context required to continue the routed work, such as:
+
+- source conversation identity;
+- relevant source event/message references;
+- route/promotion trigger;
+- user-confirmed candidate where applicable;
+- concise relevant context/open questions needed to resume.
+
+The exact storage representation remains implementation detail, but the semantic rule is:
+
+```text
+lineage + minimum seed context
+≠ full transcript copy
+```
+
+### Independent evolution after branching
+
+After the branch is created:
+
+```text
+CONV-100 continues independently
+CONV-101 continues independently
+```
+
+Later messages in one conversation do not silently propagate into the other. Cross-conversation context may be brought across only through an explicit/scoped Core retrieval or user action governed by the applicable context rules.
+
+This prevents two editable transcript copies from drifting while preserving traceable origin.
+
+### Route-specific behavior
+
+For an inferred signal, the routed conversation is created only after the applicable user confirmation required by D-022/D-026.
+
+For explicit user intent, Core may create the routed conversation directly:
+
+```text
+"saya nak pilih antara A dan B"
+→ new [DECIDE] conversation
+
+"saya nak reka offline IoT"
+→ new [DESIGN] conversation
+```
+
+For confirmed Idea promotion:
+
+```text
+source conversation
+      ↓
+SAVE_CONFIRMED_IDEA
+      ↓
+canonical Idea
+      ↕ linked
+new [IDEA] conversation
+```
+
+The canonical Idea, source conversation, and routed `[IDEA]` conversation remain distinct identities connected by lineage.
+
+### Avoid unnecessary re-branching
+
+If the user is already inside a conversation whose active route/domain matches the requested work, CrossAI should continue that same conversation rather than create another equivalent child conversation.
+
+A new routed conversation is warranted when the user intentionally branches/promotes work into a distinct route/domain or explicitly requests a separate thread.
+
+### Identity invariant
+
+```text
+source CONV identity
+≠ routed CONV identity
+≠ canonical promoted object identity
+```
+
+Titles and prefixes remain presentation metadata. Stable Core conversation IDs and canonical artifact IDs remain the actual identities.
+
+This decision refines D-020/D-022 without changing their Core-owned continuity or explicit-promotion authority.
+
 ---
 
 # 7. OPEN QUESTIONS
@@ -1013,13 +1307,21 @@ Companion must never say “Saved to CrossAI” based only on AI intent or trans
 
 Shared bots/services create serious cross-user risk if channel identity resolution or binding is incorrect.
 
-## R-005 | OPEN — Runtime coupling
+## R-005 | MITIGATED BY D-026 — Runtime / intelligence coupling
 
-If Companion shares too much runtime/quota with Core, Companion failure may affect continuity despite the locked separation.
+Companion, CrossAI Intelligence, and Core continuity must remain separate failure domains. D-026 locks that CrossAI Intelligence unavailability cannot by itself make ordinary Companion/Core continuity unavailable.
 
 ## R-006 | OPEN — Provider/commercial premature coupling
 
 Selecting a provider, quota model, or payment tier too early may hard-code product policy into architecture.
+
+## R-007 | MITIGATED BY D-027 — Cross-repository authority conflict
+
+Companion D-019 and current AISYNC D-020/D-021 encode conflicting Web-start provider-selection behavior. D-027 makes explicit AISYNC reconciliation and live merged verification a hard gate before affected Companion DO IT.
+
+## R-008 | MITIGATED BY D-028 — Routed-thread transcript drift
+
+Creating `[IDEA]`, `[DECIDE]`, or `[DESIGN]` threads by cloning full source transcripts would create competing editable histories. D-028 locks lineage-linked branching with minimum seed context and independent stable conversation identities.
 
 ---
 
@@ -1037,87 +1339,449 @@ Selecting a provider, quota model, or payment tier too early may hard-code produ
 **Current direction:** Sequence is owner-LOCKED. D-017 through D-024 now cover the Web Companion vertical slice, minimum SAVE contract, Web auth/start UX, Core-owned event-driven conversation continuity, FREE/BYOK/POWER provider freedom, routed CHAT/DECISION/PROJECT conversations, PROJECT/[DESIGN] naming, and persistent external-channel access through shared Telegram + BYOC WhatsApp. **Q-001 through Q-007 are resolved.**
 ---
 
-# 10. DESIGN — DRAFT 0.1
+# 10. DESIGN — DRAFT 0.2
 
 **Status:** READY FOR OWNER DESIGN CONFIRMATION  
 **Design Progress:** 4/4 coverage — purpose / main flow / main elements / relevant LOCKED decisions  
-**Confirmation blocker:** none from Q-001 through Q-007; explicit owner DESIGN confirmation remains required before action-plan slicing/execution.
+**Design confirmation blocker:** none identified in the Companion design itself.  
+**Pre-DO-IT gate:** D-027 remains mandatory — the affected Web start/auth/provider-routing flow cannot enter implementation until the conflicting AISYNC provider-selection behavior is explicitly reconciled, merged to AISYNC `main`, and verified.
 
 ## Purpose
 
-Provide optional conversational AI while keeping CrossAI Core as the only canonical semantic continuity authority.
+Provide an optional conversational AI surface for CrossAI while keeping CrossAI Core as the sole continuity, identity, governance, lineage, and factual SAVE authority.
 
-## Main flow
+CrossAI Companion is replaceable. Channels and AI providers may change without changing the user's Core-owned conversation identity or canonical CrossAI state.
+
+Core principle:
+
+> **CrossAI is the home of the idea. The Companion is only one place where the idea can be born.**
+
+## Product and routing model
+
+Ordinary users see human-facing navigation:
 
 ```text
-User
-  ↓
-Companion channel/UI
-  ↓
-private transient session
-  ↓
-Companion AI
-  ↓
-possible idea signal
-  ↓
-user chooses SAVE IDEA
-  ↓
-CrossAI Compatible
-  ↓
-Core identity/auth + ASC governance
-  ↓
+CHAT
+DECISION
+PROJECT
+```
+
+Core/internal method routing remains:
+
+```text
+DUMP
+DECIDE
+DESIGN
+```
+
+Mapping:
+
+```text
+CHAT      ↔ DUMP
+DECISION  ↔ DECIDE
+PROJECT   ↔ DESIGN
+```
+
+Conversation labels remain human-readable:
+
+```text
+CHAT
+├── ordinary conversation
+└── [IDEA] <title>
+
+DECISION
+└── [DECIDE] <title>
+
+PROJECT
+└── [DESIGN] <title>
+```
+
+A visible tree label, internal semantic route, stable conversation identity, and canonical promoted object are separate concepts.
+
+## Locked delivery sequence
+
+```text
+1. Web Chat
+2. WhatsApp
+3. Temaya integration
+4. Telegram
+```
+
+The sequence controls delivery priority only. It does not change the common Core continuity or CrossAI Compatible boundaries.
+
+## Main architecture
+
+```text
+                          CROSSAI CORE
+                ┌──────────────────────────┐
+                │ identity / authorization │
+                │ Core-owned conversations │
+                │ CHAT / DECISION / PROJECT│
+                │ lineage / routing        │
+                │ ASC governance           │
+                │ canonical SAVE truth     │
+                │ factual receipts         │
+                │ CrossAI Intelligence     │
+                └────────────▲─────────────┘
+                             │
+                    CrossAI Compatible
+                             │
+                ┌────────────┴─────────────┐
+                │ CROSSAI COMPANION        │
+                │                          │
+                │ Companion orchestration  │
+                │ AI Provider Adapter      │
+                │ route-signal handling    │
+                │ Compatible client        │
+                │ receipt presentation     │
+                └────────────▲─────────────┘
+                             │
+                 ┌───────────┼───────────┐
+                 │           │           │
+                 ↓           ↓           ↓
+              Web Chat   BYOC WhatsApp  Telegram
+                                      shared bot
+```
+
+Temaya, Kerani AI, and future compatible assistants may bypass Companion and use the CrossAI Compatible boundary directly.
+
+## Web Companion start flow
+
+The Web Companion default is user-first:
+
+```text
+user types naturally
+        ↓
+SEND
+        ↓
+authenticated?
+  ├─ YES → continue
+  └─ NO
+        ↓
+preserve draft
+        ↓
+Google sign-in / CrossAI identity resolution
+        ↓
+return to authenticated Companion flow
+        ↓
+create/load private Core-owned conversation
+        ↓
+continue
+```
+
+The user is not required to select an external AI app/provider before beginning the normal Web Companion flow.
+
+The user may later request an external handoff, such as `mahu pindah`. CrossAI must use the available handoff mechanism truthfully and must not claim automatic transfer where only copy/paste or another fallback is possible.
+
+## Core-owned conversation persistence
+
+Conversation continuity is durable and belongs to Core, not Companion and not the inference provider.
+
+Primary event flow:
+
+```text
+USER_MESSAGE_SUBMITTED
+        ↓
+Companion → Core
+        ↓
+Core persists + ACK
+        ↓
+Companion invokes AI provider
+        ↓
+assistant streams/responds
+        ↓
+ASSISTANT_MESSAGE_COMPLETED / INTERRUPTED
+        ↓
+Companion → Core
+        ↓
+Core records factual assistant-turn state
+```
+
+A submitted user message must be persisted/acknowledged before the provider call begins.
+
+Companion may keep only the transient runtime state required to serve the active interaction. It must not become a competing durable transcript or semantic authority.
+
+Conversation continuity is scoped to the active conversation by default. Cross-conversation context requires explicit/scoped Core retrieval or user action.
+
+## Routed conversation branching
+
+When work moves into a dedicated IDEA / DECIDE / DESIGN conversation, CrossAI branches by lineage rather than cloning the entire transcript.
+
+```text
+source conversation
+CONV-100
+   │
+   │ source lineage / triggering event(s)
+   ↓
+routed conversation
+CONV-101
+[IDEA] / [DECIDE] / [DESIGN]
+```
+
+The new routed conversation receives only the minimum seed context required to continue:
+
+- source conversation identity;
+- relevant source event/message references;
+- route/promotion trigger;
+- confirmed candidate where applicable;
+- concise relevant context/open questions.
+
+```text
+lineage + minimum seed context
+≠ full transcript copy
+```
+
+Source and routed conversations then evolve independently. If the current conversation already matches the requested route/domain, CrossAI continues it instead of creating an unnecessary equivalent child thread.
+
+## IDEA / DECIDE / DESIGN orchestration
+
+Companion may notice possible `IDEA`, `DECIDE`, or `DESIGN` signals during normal conversation.
+
+### Explicit intent
+
+Clear user intent routes deterministically without requiring CrossAI Intelligence screening.
+
+```text
+"saya nak pilih antara..."
+→ DECIDE
+
+"saya nak reka..."
+→ DESIGN
+
+"save idea ini..."
+→ IDEA / SAVE flow
+```
+
+### Inferred intent
+
+```text
+Companion detects possible signal
+        ↓
+CrossAI Intelligence available?
+  ├─ YES → screen / normalize / relate / dedupe
+  │        → advisory candidate
+  └─ NO  → no silent auto-route
+           no silent promotion
+           continue chat or surface tentative candidate
+```
+
+If the user explicitly confirms a tentative candidate, that confirmation becomes explicit user intent and Core may route deterministically.
+
+CrossAI Intelligence is therefore an advisory semantic dependency, not a hard availability dependency.
+
+```text
+CrossAI Intelligence unavailable
+≠ Companion unavailable
+≠ Core continuity unavailable
+```
+
+## Canonical promotion model
+
+Routing a conversation and creating a canonical object are separate actions.
+
+```text
+route/tag conversation
+≠ canonical SAVE
+
+[DECIDE] conversation
+≠ saved Decision
+
+[DESIGN] conversation
+≠ Project
+```
+
+### IDEA — MVP canonical write path
+
+IDEA has the first complete canonical write contract:
+
+```text
+source conversation
+      ↓
+user confirms displayed Idea candidate
+      ↓
+SAVE_CONFIRMED_IDEA
+      ↓
+Core authorization + ASC governance
+      ↓
 canonical SAVE
-  ↓
-factual receipt
-  ↓
-Companion displays receipt
-  ↓
-same saved Idea visible in CrossAI Web
+      ↓
+independent verification
+      ↓
+SUCCESS | FAILED | UNKNOWN receipt
+      ↓
+on verified SUCCESS:
+create/link [IDEA] conversation
 ```
 
-## Proposed component boundary
+Companion may display **Saved to CrossAI** only after verified `SUCCESS`.
+
+The canonical Idea, source conversation, and linked `[IDEA]` conversation remain separate identities connected by lineage.
+
+### DECIDE — conversation support first
+
+The MVP supports routed `[DECIDE]` conversations. A full canonical Decision SAVE contract is deferred to a later explicit contract.
+
+### PROJECT / DESIGN — conversation first, Project only after promotion
+
+A `[DESIGN]` conversation lives under the visible PROJECT tree but is not itself a full Project.
 
 ```text
-┌───────────────────────────────────────────┐
-│ CROSSAI WEB / CHANNEL                     │
-│ identity entry / conversation surface     │
-└──────────────────┬────────────────────────┘
-                   ↓
-┌───────────────────────────────────────────┐
-│ CROSSAI COMPANION RUNTIME                 │
-│                                           │
-│ channel adapter                           │
-│ transient session state                   │
-│ conversational AI adapter                 │
-│ possible-idea presentation                │
-│ CrossAI Compatible client                 │
-│ receipt presentation                      │
-│                                           │
-│ DOES NOT OWN canonical Ideas/Projects     │
-└──────────────────┬────────────────────────┘
-                   ↓
-           CrossAI Compatible
-                   ↓
-┌───────────────────────────────────────────┐
-│ CROSSAI CORE                              │
-│ identity / authorization                  │
-│ ASC governance                            │
-│ canonical SAVE / lineage                  │
-│ factual receipt                           │
-│ optional CrossAI Intelligence             │
-└───────────────────────────────────────────┘
+[DESIGN] Offline IoT
+      ↓
+"jadikan ini project"
+      ↓
+CREATE PROJECT
+      ↓
+user-owned Google Drive project space
+      ↓
+GitHub?
+[ CREATE NEW ] / [ LINK EXISTING ] / [ NOT NOW ]
 ```
+
+GitHub is offered but optional. CrossAI must not silently create a repository or require GitHub merely to create the Drive-first Project.
+
+## AI provider strategy
+
+Companion uses one replaceable AI Provider Adapter.
+
+```text
+FREE
+BYOK
+POWER
+```
+
+These are inference/cost/privacy modes, not different continuity systems.
+
+### FREE
+
+First implementation target:
+
+```text
+CrossAI-controlled approved free model/provider policy
+        ↓
+OpenRouter free API experiment
+        ↓
+replaceable provider/model
+```
+
+Gemini Free remains an allowed alternative/fallback. Exact model/provider IDs remain runtime configuration.
+
+FREE limitations, quotas, availability, and privacy/data-use conditions must be surfaced truthfully.
+
+### BYOK
+
+Users may supply/authorize their own AI provider credential without changing Core continuity. Credentials remain protected runtime secrets and must not become browser-persisted conversation content or Core semantic state.
+
+### POWER
+
+POWER allows stronger/paid inference without granting stronger semantic authority. Current direction prefers user-funded external-provider/BYOK mechanisms rather than requiring CrossAI itself to become a paid subscription product.
+
+```text
+provider/model changes
+≠ conversation identity changes
+≠ Core continuity changes
+≠ canonical SAVE authority changes
+```
+
+## External-channel model
+
+CrossAI separates:
+
+```text
+A. CHANNEL CONNECTION
+   who owns/configures the channel installation?
+
+B. USER BINDING
+   which verified channel identity maps to the CrossAI user?
+```
+
+The pairing credential is short-lived and single-use, but a successful binding is persistent.
+
+```text
+PENDING pairing
+(short-lived)
+      ↓
+verified
+      ↓
+ACTIVE persistent binding
+      ↓
+normal chat does not require re-binding
+```
+
+Binding resolves identity only. Core authorization still governs access to conversations, Ideas, Decisions, Projects, and SAVE operations.
+
+### Telegram
+
+Telegram uses one CrossAI-owned shared bot/service for many users.
+
+```text
+CrossAI shared Telegram bot
+        ↓
+telegram_user_id
+        ↓
+persistent verified binding
+        ↓
+crossai_user_id
+```
+
+### WhatsApp — BYOC
+
+WhatsApp uses **BYOC — Bring Your Own Channel**.
+
+```text
+CrossAI user
+      ↓
+connect own Meta / WhatsApp installation
+      ↓
+verify channel connection
+      ↓
+verify platform-derived WhatsApp user identity
+      ↓
+persistent user binding
+```
+
+The user's Meta/WhatsApp account owns its external quota, billing, account standing, and platform obligations. CrossAI must not hard-code a fixed free-message allowance.
+
+Current product principle:
+
+> **CrossAI is free as-is; users may BYOC and BYOK for user-controlled external capability, quota, privacy, or paid usage.**
+
+## Failure-domain separation
+
+The system must preserve these boundaries:
+
+```text
+Companion Runtime failure
+≠ Core continuity failure
+
+CrossAI Intelligence failure
+≠ Companion failure
+
+AI provider failure
+≠ conversation identity loss
+
+channel failure
+≠ semantic memory loss
+
+channel/provider cost change
+≠ continuity-model change
+```
+
+Rate limits, quota exhaustion, provider outage, or external-channel failure must be represented truthfully rather than converted into false SAVE success or silent data loss.
 
 ## Main elements
 
-1. **Web Chat Adapter** — channel/UI input-output surface.
-2. **Companion Runtime** — private transient session, conversational AI orchestration, possible-idea surfacing, explicit SAVE interaction.
-3. **CrossAI Compatible Client** — deterministic Companion-side connector to Core.
-4. Channel/user → CrossAI identity resolution.
-5. Core-side CrossAI Compatible receiver.
-6. Core-side authorization/governance.
-7. Canonical SAVE + factual receipt.
-8. CrossAI Web read/inspection of the same saved state.
+1. **Web Chat Adapter** — first delivery surface and default Web Companion UI.
+2. **External Channel Adapters** — BYOC WhatsApp and shared Telegram transport adapters.
+3. **Companion Runtime** — conversational orchestration, route-signal handling, provider invocation, and receipt presentation.
+4. **AI Provider Adapter** — replaceable FREE / BYOK / POWER inference boundary.
+5. **CrossAI Compatible Client** — deterministic Companion-side connector to Core.
+6. **CrossAI Compatible Core receiver** — authenticated/authorized stable integration boundary.
+7. **Core Conversation Continuity** — stable conversation IDs, transcript events, routing/tree state, archive/delete/recovery.
+8. **CrossAI Intelligence** — optional low-volume semantic screening/advisory service.
+9. **ASC/Core Governance** — authorization, explicit promotion, idempotency, canonical SAVE, verification, factual receipt.
+10. **User-owned Google Drive** — durable default project/content direction where applicable.
+11. **Optional GitHub integration** — create/link only after explicit Project promotion or later user choice.
 
 ## Architecture invariants
 
@@ -1129,14 +1793,81 @@ channel changes
 ≠ semantic authority changes
 
 AI provider changes
-≠ idea ownership changes
+≠ conversation identity changes
 
-bot scaling changes
-≠ user identity changes
+CrossAI Intelligence outage
+≠ Companion/Core continuity outage
 
-conversation state
-≠ canonical CrossAI state
+route/tag conversation
+≠ canonical promoted object
+
+source CONV identity
+≠ routed CONV identity
+≠ canonical artifact identity
+
+visible CHAT / DECISION / PROJECT
+≠ internal DUMP / DECIDE / DESIGN
+
+binding
+≠ bypass Core authorization
 ```
+
+## Locked-decision lineage
+
+This draft is derived from the current owner-LOCKED Companion decision set:
+
+```text
+D-016  delivery/integration order
+D-017  Web MVP component boundary
+D-018  SAVE_CONFIRMED_IDEA contract
+D-019  Web auth/start UX
+D-020  Core-owned conversation continuity
+D-021  FREE / BYOK / POWER provider freedom
+D-022  IDEA / DECIDE / DESIGN routed conversations
+D-023  PROJECT visible tree + [DESIGN] child threads
+D-024  persistent binding + shared Telegram + BYOC WhatsApp
+D-025  visible vs internal routing normalization
+D-026  graceful CrossAI Intelligence fallback
+D-027  mandatory AISYNC reconciliation gate before affected DO IT
+D-028  lineage-based routed-conversation branching
+```
+
+## Open implementation boundaries — not design blockers
+
+The following remain implementation/runtime work and do not silently alter this design:
+
+- exact AI model IDs/provider roster;
+- exact CrossAI Intelligence provider/model;
+- exact physical conversation/Drive storage schema;
+- exact WhatsApp Meta credential/webhook setup and secret lifecycle;
+- exact Telegram webhook/runtime deployment;
+- exact queue/backpressure implementation;
+- exact routed-thread seed-context representation;
+- canonical Decision SAVE contract;
+- full CREATE PROJECT contract;
+- future cross-conversation retrieval policy beyond explicit/scoped retrieval.
+
+## Confirmation state
+
+The design has complete coverage of:
+
+```text
+Purpose                  ✓
+Main flow                ✓
+Main elements            ✓
+LOCKED decision lineage  ✓
+```
+
+No unresolved Companion design question from Q-001 through Q-007 blocks owner confirmation.
+
+However:
+
+```text
+DESIGN confirmation
+≠ authorization to start affected DO IT
+```
+
+D-027 remains a hard cross-repository implementation gate until AISYNC reconciliation is completed and verified.
 
 ---
 
@@ -1179,7 +1910,7 @@ The current Companion architecture decision set is ready for owner-controlled DE
 
 # 13. CHANGE CONTROL
 
-- Do not silently rewrite D-001 through D-024.
+- Do not silently rewrite D-001 through D-028.
 - A new finding may refine DESIGN or ACTION_PLAN.
 - A finding that conflicts with a LOCKED decision requires a new explicit decision.
 - Upstream AISYNC contract changes must be reconciled before Companion implementation claims compatibility.
@@ -1191,6 +1922,11 @@ The current Companion architecture decision set is ready for owner-controlled DE
 
 | Version | Date | Change |
 |---|---|---|
+| 0.1.14 | 2026-10-07 | Rewrote DESIGN DRAFT 0.2 from the current LOCKED D-016–D-028 set: persistent Core-owned conversations, CHAT/DECISION/PROJECT vs DUMP/DECIDE/DESIGN normalization, lineage-based branching, graceful Intelligence fallback, FREE/BYOK/POWER, persistent binding, shared Telegram, BYOC WhatsApp, explicit promotion, and the D-027 pre-DO-IT AISYNC reconciliation gate. No new architecture decision was introduced. |
+| 0.1.13 | 2026-10-07 | LOCKED D-028 routed-conversation branching: new IDEA/DECIDE/DESIGN threads use distinct Core conversation IDs linked by lineage and minimum seed context rather than full transcript cloning; source and child evolve independently and matching-route conversations avoid unnecessary re-branching. |
+| 0.1.12 | 2026-10-07 | LOCKED D-027 AISYNC reconciliation gate: current AISYNC mandatory provider-selection behavior conflicts with Companion D-019; affected Web start/auth/provider-routing DO IT is blocked until an explicit owner-approved AISYNC refinement is merged and verified on AISYNC main. |
+| 0.1.11 | 2026-10-07 | LOCKED D-026 graceful Intelligence fallback: CrossAI Intelligence is optional for inferred semantic screening, explicit routing remains deterministic, inferred signals never silently auto-route when Intelligence is unavailable, and Companion/Core continuity remain usable. |
+| 0.1.10 | 2026-10-07 | LOCKED D-025 routing normalization: user-facing navigation is CHAT / DECISION / PROJECT while internal semantic/method routing remains DUMP / DECIDE / DESIGN; older visible DUMP/DESIGN wording is superseded without changing canonical promotion or conversation identity. |
 | 0.1.9 | 2026-10-07 | LOCKED D-024 external-channel model: first-time pairing is short-lived/single-use but successful binding persists; Telegram uses one CrossAI-owned shared bot, WhatsApp uses BYOC user-owned Meta/Cloud API connection, channel connection and human binding are separate, and CrossAI remains free-as-is with BYOC/BYOK for external capability/cost. |
 | 0.1.8 | 2026-10-07 | LOCKED D-023 visible-tree refinement: PROJECT replaces visible DESIGN tree while child threads remain `[DESIGN]`; full Project exists only after explicit promotion to a Drive-first project space, followed by optional GitHub CREATE/LINK/NOT NOW. |
 | 0.1.7 | 2026-10-07 | LOCKED D-022 routed conversation orchestration: CHAT carries ordinary/[IDEA] conversations, DECISION carries [DECIDE], DESIGN remains the routed domain for [DESIGN] threads; explicit intent can route directly, IDEA canonical SAVE is MVP-complete, and canonical Decision SAVE/full Project creation are deferred. |
