@@ -590,6 +590,166 @@ fallback/routing metadata where relevant
 
 This metadata is for factual provenance/debugging and does not make the AI provider a continuity or semantic authority.
 
+## D-022 | LOCKED — Routed conversation domains before canonical promotion
+
+**Decision:** CrossAI Companion and Core recognize three structured conversation signals/domains in addition to ordinary chat:
+
+```text
+IDEA
+DECIDE
+DESIGN
+```
+
+These route a conversation into an appropriate Core-owned continuity tree without automatically creating canonical Decisions or full Projects.
+
+### Visible tree model
+
+The user-facing conversation trees are:
+
+```text
+CHAT
+├── ordinary conversations
+└── [IDEA] <short title>
+
+DECISION
+└── [DECIDE] <short title>
+
+DESIGN
+└── [DESIGN] <short title>
+```
+
+`DESIGN` is the visible tree name rather than `PROJECT`. Core understands it as the design/project-development domain, but entering the DESIGN tree does not itself create a full Project.
+
+Each entry remains a normal stable Core-owned conversation/thread with a durable conversation identity. Prefixes such as `[IDEA]`, `[DECIDE]`, and `[DESIGN]` are route/title presentation metadata, not identity.
+
+### Detection and explicit intent
+
+Companion AI may emit lightweight `IDEA`, `DECIDE`, or `DESIGN` signals as part of normal conversation inference. CrossAI Intelligence is not required on every turn.
+
+For inferred/non-explicit signals:
+
+```text
+Companion signal
+      ↓
+CrossAI Intelligence screening
+      ↓
+candidate route / title / relevant relation
+      ↓
+user confirms the proposed route/promotion where needed
+      ↓
+Core creates or branches the routed conversation
+```
+
+CrossAI Intelligence receives only minimum authorized scoped context and may classify, normalize, relate, or detect likely duplicates/relationships. Its result remains advisory.
+
+When the user expresses explicit intent, probabilistic detection is unnecessary. Examples:
+
+```text
+"saya nak pilih antara..."
+→ DECIDE
+
+"saya nak reka..."
+→ DESIGN
+
+"save idea ini..."
+→ IDEA / SAVE IDEA flow
+```
+
+Core may route/create the corresponding private conversation directly from that explicit intent while preserving authorization and factual continuity.
+
+### IDEA — MVP canonical promotion supported
+
+IDEA is the only routed domain in the first MVP with a complete canonical promotion write contract.
+
+On explicit user confirmation:
+
+```text
+source conversation
+      ↓
+freeze displayed confirmed idea candidate
+      ↓
+SAVE_CONFIRMED_IDEA
+      ↓
+ASC/Core canonical SAVE + verification
+      ↓
+factual receipt
+      ↓
+create/link [IDEA] <title> conversation under CHAT tree
+```
+
+The canonical Idea and the `[IDEA]` conversation are linked but have separate lifecycles/identities. Deleting one does not silently delete the other.
+
+### DECIDE — routed conversation in MVP, canonical decision SAVE deferred
+
+A DECIDE signal or explicit selection intent creates/branches a private conversation such as:
+
+```text
+[DECIDE] Laptop 💻
+```
+
+under the `DECISION` tree.
+
+The MVP may continue the comparison/selection discussion there. Creating the DECIDE conversation is not the same as saving a canonical Decision. The full canonical Decision SAVE contract is deferred to a later explicit design.
+
+### DESIGN — routed conversation in MVP, full Project creation deferred
+
+A DESIGN signal or explicit design/build intent creates/branches a private conversation such as:
+
+```text
+[DESIGN] Offline IoT
+```
+
+under the visible `DESIGN` tree.
+
+This does **not** automatically create a full Project.
+
+Project promotion requires explicit user intent, for example:
+
+```text
+[DESIGN] Offline IoT
+      ↓
+"jadikan ini project"
+      ↓
+CREATE PROJECT
+      ↓
+user-owned Google Drive project space
+      ↓
+GitHub optional:
+[ CREATE NEW ] / [ LINK EXISTING ] / [ NOT NOW ]
+```
+
+The exact Project-creation contract is deferred and remains governed by the upstream Drive-first CrossAI direction. GitHub must remain optional, not a prerequisite.
+
+### Channel independence
+
+The routed conversation/tree state is Core-owned and channel-independent. Web, WhatsApp, Telegram, or future Companion adapters may continue the same authorized conversation IDs after identity binding/resolution.
+
+```text
+Web ──────┐
+WhatsApp ─┼→ Companion → Core-owned routed conversation
+Telegram ─┘
+```
+
+A messaging channel does not need to host the CrossAI tree UI to continue a routed conversation. CrossAI Web remains the richer browse/manage surface, while external channels can resolve, create, and continue authorized Core conversations through the same continuity authority.
+
+### Governance invariant
+
+```text
+route/tag conversation
+≠ canonical SAVE
+
+[DECIDE] conversation
+≠ saved Decision
+
+[DESIGN] conversation
+≠ Project
+
+AI signal
+≠ user decision
+```
+
+Canonical promotion remains subject to the applicable explicit user-controlled flow and factual Core receipt.
+
 ---
 
 # 7. OPEN QUESTIONS
@@ -621,9 +781,9 @@ Resolved by **D-020 | LOCKED**: Core owns durable conversation continuity; persi
 
 Resolved by **D-021 | LOCKED**: one replaceable Provider Adapter supports FREE / BYOK / POWER. FREE begins with a CrossAI-controlled allowlist over OpenRouter free API access, with Gemini Free as an allowed alternative/fallback; exact models/providers remain runtime configuration and provider privacy/terms must be disclosed truthfully.
 
-## Q-006 | OPEN — Exact idea-detection orchestration
+## Q-006 | RESOLVED — Routed IDEA / DECIDE / DESIGN orchestration
 
-Need to decide how much candidate detection occurs in Companion AI versus a Core-side CrossAI Intelligence call while preserving the locked governance boundary.
+Resolved by **D-022 | LOCKED**: Companion may signal IDEA/DECIDE/DESIGN; inferred signals are screened by CrossAI Intelligence using minimum scoped context, while explicit user intent may route directly. Core owns stable routed conversations in CHAT / DECISION / DESIGN trees. IDEA has the complete MVP canonical SAVE path; canonical Decision SAVE and full Project creation are deferred. DESIGN-to-Project promotion is explicit and creates a Google Drive project space with optional GitHub CREATE / LINK / NOT NOW.
 
 ## Q-007 | OPEN — Binding mechanics
 
@@ -677,14 +837,14 @@ Selecting a provider, quota model, or payment tier too early may hard-code produ
 | 3 | Temaya integration | PASS | Prove a peer assistant can use CrossAI Compatible without Companion | Requires Compatible contract mature enough for external assistant integration | **D-016 LOCKED — THIRD** |
 | 4 | Telegram | PASS | Add shared Telegram bot + binding after earlier boundaries are proven | Telegram webhook/binding implementation remains OPEN | **D-016 LOCKED — FOURTH** |
 
-**Current direction:** Sequence is owner-LOCKED. D-017 locks the Web Chat MVP vertical slice, D-018 its minimum SAVE contract, D-019 its Web auth/start UX, D-020 Core-owned event-driven private conversation continuity, and D-021 the replaceable FREE/BYOK/POWER provider strategy. The next unresolved design topic is **Q-006 idea-detection orchestration**.
+**Current direction:** Sequence is owner-LOCKED. D-017 locks the Web Chat MVP vertical slice, D-018 its minimum SAVE contract, D-019 its Web auth/start UX, D-020 Core-owned event-driven private conversation continuity, D-021 the replaceable FREE/BYOK/POWER provider strategy, and D-022 routed CHAT/DECISION/DESIGN conversations with IDEA-only canonical SAVE in the MVP. The next unresolved design topic is **Q-007 external-channel binding mechanics**.
 ---
 
 # 10. DESIGN — DRAFT 0.1
 
 **Status:** PENDING CONFIRMATION  
 **Design Progress:** 4/4 coverage — purpose / main flow / main elements / relevant LOCKED decisions  
-**Confirmation blocker:** Q-006 exact idea-detection orchestration is still OPEN.
+**Confirmation blocker:** Q-007 external-channel binding mechanics are still OPEN.
 
 ## Purpose
 
@@ -814,7 +974,7 @@ DELIVERED not started
 
 Next design decision:
 
-> **Q-006 — Define exact idea-detection orchestration between Companion AI and Core-side CrossAI Intelligence while preserving explicit user-controlled promotion.**
+> **Q-007 — Define external-channel binding mechanics: expiry, single-use, replay protection, revoke, rebind, and recovery.**
 
 No implementation should begin until this boundary is sufficiently designed and owner-approved.
 
@@ -822,7 +982,7 @@ No implementation should begin until this boundary is sufficiently designed and 
 
 # 13. CHANGE CONTROL
 
-- Do not silently rewrite D-001 through D-021.
+- Do not silently rewrite D-001 through D-022.
 - A new finding may refine DESIGN or ACTION_PLAN.
 - A finding that conflicts with a LOCKED decision requires a new explicit decision.
 - Upstream AISYNC contract changes must be reconciled before Companion implementation claims compatibility.
@@ -834,6 +994,7 @@ No implementation should begin until this boundary is sufficiently designed and 
 
 | Version | Date | Change |
 |---|---|---|
+| 0.1.7 | 2026-10-07 | LOCKED D-022 routed conversation orchestration: CHAT carries ordinary/[IDEA] conversations, DECISION carries [DECIDE], visible DESIGN carries [DESIGN]; explicit intent can route directly, IDEA canonical SAVE is MVP-complete, canonical Decision SAVE/full Project creation are deferred, and DESIGN promotion creates a Drive-first project with optional GitHub CREATE/LINK/NOT NOW. |
 | 0.1.6 | 2026-10-07 | LOCKED D-021 provider freedom strategy: replaceable Provider Adapter with FREE/BYOK/POWER modes; FREE starts with CrossAI-controlled OpenRouter free allowlist, Gemini Free remains alternative/fallback, privacy/terms disclosed, and exact models/providers remain runtime configuration. |
 | 0.1.5 | 2026-10-07 | LOCKED D-020 Core-owned private conversation continuity: stable resumable conversation identity in DUMP tree, event-driven turn persistence, Core-owned transcript/context/recovery lifecycle, conversation-scoped context, archive/delete+tombstone boundary, and Google Drive as future durable user-owned storage direction. |
 | 0.1.4 | 2026-10-07 | LOCKED D-019 CrossAI Web Companion auth/session UX: type-first chat, Google/CrossAI identity authority, draft preservation, persistent private conversation, no mandatory external AI selection, user-triggered `mahu pindah` handoff, and explicit upstream AISYNC D-020/D-021 reconciliation requirement. |
