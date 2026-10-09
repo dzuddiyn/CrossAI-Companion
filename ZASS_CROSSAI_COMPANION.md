@@ -2,7 +2,7 @@
 
 **Project:** CrossAI Companion  
 **Repository:** `dzuddiyn/CrossAI-Companion`  
-**Method:** ZASSIMPLE v0.3.0  
+**Method:** ZASSIMPLE v0.3.0 + project-local Architecture Challenge refinement  
 **Status:** DESIGN ACTIVE — bootstrap from LOCKED CrossAI direction  
 **Date initialized:** 2026-10-07  
 **Owner:** Project Owner  
@@ -11,6 +11,166 @@
 > **ZASSIMPLE: lightweight di permukaan, tetapi lineage tetap kuat sampai execution.**
 >
 > **DUMP → DISTILL → DECIDE → DESIGN → DO IT → DELIVERED !!**
+
+## PROJECT-LOCAL ZASSIMPLE EXECUTION PROTOCOL
+
+**Status:** ACTIVE FOR THIS PROJECT  
+**Scope:** CrossAI Companion only. This refines execution procedure without changing global ZASSIMPLE semantics or any LOCKED D-xxx architecture decision.
+
+For this project, DESIGN is not confirmed immediately after a coherent draft. A dedicated high-reasoning architecture challenge must occur first.
+
+```text
+DRAFT DESIGN
+    ↓
+PHASE 1 — READ & MAP CURRENT STATE
+    ↓
+PHASE 2 — ARCHITECTURE CHALLENGE
+    ↓
+PHASE 3 — DECISION REVIEW
+    ↓
+PHASE 4 — ARCHITECTURE REVISION
+    ↓
+PHASE 5 — ACTION_PLAN
+    ↕
+architecture feedback when implementation reality exposes a flaw
+    ↓
+PHASE 6 — ATOMIC TASK SLICING
+    ↓
+PHASE 7 — FINAL REVIEW PACKAGE
+    ↓
+OWNER DESIGN CONFIRMATION
+    ↓
+DO IT
+```
+
+### Work mode = challenge / reasoning chamber
+
+For this project, Work mode may be used for deep architecture reasoning, red-team review, pre-mortem, assumption challenge, failure-mode analysis, and implementation planning.
+
+Work-mode output is **review evidence**, not canonical authority by itself.
+
+```text
+Work finding
+≠ LOCKED decision
+≠ canonical architecture
+≠ execution authority
+```
+
+A Work finding becomes canonical only after project review verifies it against:
+
+- current repository state;
+- D-001 through D-028 and any later LOCKED decisions;
+- applicable AISYNC/Core contracts;
+- explicit owner decisions;
+- current design/action-plan/task lineage.
+
+### Canonical lane
+
+The canonical project lane owns:
+
+- KEEP / REVISE / QUESTION / EXPERIMENT / OWNER DECISION classification;
+- explicit revision proposals;
+- owner confirmations;
+- repository persistence;
+- final DESIGN;
+- ACTION_PLAN;
+- executable TASKS.
+
+No Work-mode output may silently overwrite a LOCKED decision.
+
+### Phase 2 challenge methods
+
+Default challenge stack:
+
+1. Red-team review.
+2. Pre-mortem.
+3. Assumption challenge.
+4. Failure-mode analysis.
+
+Review must explicitly test:
+
+- hidden coupling and spaghetti risk;
+- ownership of state;
+- duplicated responsibilities;
+- module boundaries and circular dependencies;
+- retries, races, idempotency and recovery;
+- observability/logging;
+- testability and rollback;
+- secrets/access/privacy/tenant isolation;
+- provider/channel/vendor lock-in;
+- quota/cost/runtime assumptions;
+- migration and maintainability;
+- autonomous coding-agent handoff quality.
+
+Every material finding must state severity, evidence, failure scenario, recommended direction, and whether a LOCKED decision would need to change.
+
+### Locked-decision stop rule
+
+If a finding requires changing a LOCKED decision:
+
+```text
+STOP
+↓
+do not rewrite the decision
+↓
+raise OWNER DECISION REQUIRED
+↓
+show evidence + safe options
+↓
+owner decides
+```
+
+### ACTION_PLAN ↔ architecture feedback
+
+ACTION_PLAN is implementation lineage, not merely a task list.
+
+If planning exposes an architecture flaw:
+
+```text
+ACTION_PLAN finding
+      ↓
+return to architecture
+      ↓
+record explicit revision
+      ↓
+owner review where required
+      ↓
+resume ACTION_PLAN
+```
+
+### Atomic-task rule
+
+A task is executable only when the coding agent can complete it **without making a new architecture decision**.
+
+Every executable task must contain bounded scope, dependencies, allowed/forbidden files, preconditions, acceptance criteria, tests, regression requirements, evidence, commit expectation, and STOP/ESCALATE rules.
+
+Coding agent must STOP AND ESCALATE when:
+
+- a LOCKED decision must change;
+- architecture documents conflict;
+- required data is missing/ambiguous;
+- scope requires unapproved external/production access;
+- required secrets are unavailable;
+- multiple materially different designs remain possible;
+- the same failure repeats three times without a new diagnosis;
+- fixing one test would weaken another valid test;
+- a broader Core/module change is discovered outside task scope;
+- unexpected uncommitted human changes may be overwritten.
+
+On STOP, the agent must report the finding, evidence, why execution stopped, exact decision/question required, and safe options without choosing for the owner.
+
+### Confirmation rule
+
+For this project:
+
+```text
+coherent DESIGN draft
+≠ ready for confirmation automatically
+```
+
+Final owner DESIGN confirmation occurs only after the Architecture Challenge, revision review, implementation planning, and atomic-task slicing have demonstrated that the architecture is sufficiently bounded for execution.
+
+---
 
 ---
 
@@ -1896,23 +2056,36 @@ DUMP      ✓
 DISTILL   ✓
 DECIDE    ✓ baseline architecture locks imported
 DESIGN    ← CURRENT
+  PHASE 1 current-state mapping      ✓ baseline available
+  PHASE 2 architecture challenge    ← CURRENT in Work mode
+  PHASE 3 decision review           pending
+  PHASE 4 architecture revision     pending
+  PHASE 5 ACTION_PLAN               pending
+  PHASE 6 atomic task slicing       pending
+  PHASE 7 final review package      pending
 DO IT     not started
 DELIVERED not started
 ```
 
-Next design decision:
+Current procedural state:
 
-> **No remaining Q-001–Q-007 design blocker is open.**
+> **DESIGN DRAFT 0.2 is the challenge target, not yet the final confirmed design.**
 
-The current Companion architecture decision set is ready for owner-controlled DESIGN confirmation / action-plan slicing. This statement does not authorize implementation or merge by itself.
+Work mode is currently the high-reasoning challenge lane. Its findings must return to the canonical project lane for KEEP / REVISE / QUESTION / EXPERIMENT / OWNER DECISION classification before any design revision is accepted.
+
+D-027 remains a separate hard pre-DO-IT reconciliation gate for the affected AISYNC/Companion front-door contract.
 
 ---
 
 # 13. CHANGE CONTROL
 
 - Do not silently rewrite D-001 through D-028.
+- Work-mode challenge output is evidence, not authority; canonical promotion requires project review.
 - A new finding may refine DESIGN or ACTION_PLAN.
-- A finding that conflicts with a LOCKED decision requires a new explicit decision.
+- A finding that conflicts with a LOCKED decision requires OWNER DECISION REQUIRED and a new explicit decision before revision.
+- Architecture revision must preserve valid existing design and show justified deltas rather than silently rewriting the whole design.
+- ACTION_PLAN may feed implementation reality back into architecture, but every feedback revision must be explicit and traceable.
+- Atomic tasks must not require the coding agent to make new architecture decisions.
 - Upstream AISYNC contract changes must be reconciled before Companion implementation claims compatibility.
 - Provider/channel implementation details remain replaceable unless explicitly promoted to architecture decisions.
 
@@ -1922,6 +2095,7 @@ The current Companion architecture decision set is ready for owner-controlled DE
 
 | Version | Date | Change |
 |---|---|---|
+| 0.1.15 | 2026-10-09 | Activated a CrossAI Companion project-local ZASSIMPLE Architecture Challenge procedure: Work mode is the high-reasoning challenge lane; findings return to the canonical lane for KEEP/REVISE/QUESTION/EXPERIMENT/OWNER classification; ACTION_PLAN may feed explicit findings back into architecture; tasks must be architecture-decision-free; final DESIGN confirmation occurs after challenge, revision, planning, and atomic slicing. DESIGN DRAFT 0.2 and D-001–D-028 are unchanged. |
 | 0.1.14 | 2026-10-07 | Rewrote DESIGN DRAFT 0.2 from the current LOCKED D-016–D-028 set: persistent Core-owned conversations, CHAT/DECISION/PROJECT vs DUMP/DECIDE/DESIGN normalization, lineage-based branching, graceful Intelligence fallback, FREE/BYOK/POWER, persistent binding, shared Telegram, BYOC WhatsApp, explicit promotion, and the D-027 pre-DO-IT AISYNC reconciliation gate. No new architecture decision was introduced. |
 | 0.1.13 | 2026-10-07 | LOCKED D-028 routed-conversation branching: new IDEA/DECIDE/DESIGN threads use distinct Core conversation IDs linked by lineage and minimum seed context rather than full transcript cloning; source and child evolve independently and matching-route conversations avoid unnecessary re-branching. |
 | 0.1.12 | 2026-10-07 | LOCKED D-027 AISYNC reconciliation gate: current AISYNC mandatory provider-selection behavior conflicts with Companion D-019; affected Web start/auth/provider-routing DO IT is blocked until an explicit owner-approved AISYNC refinement is merged and verified on AISYNC main. |
