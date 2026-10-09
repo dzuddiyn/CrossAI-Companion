@@ -1620,9 +1620,9 @@ Creating `[IDEA]`, `[DECIDE]`, or `[DESIGN]` threads by cloning full source tran
 
 # 10. DESIGN — DRAFT 0.2
 
-**Status:** READY FOR OWNER DESIGN CONFIRMATION  
+**Status:** READY FOR ARCHITECTURE CHALLENGE — NOT READY FOR FINAL CONFIRMATION  
 **Design Progress:** 4/4 coverage — purpose / main flow / main elements / relevant LOCKED decisions  
-**Design confirmation blocker:** none identified in the Companion design itself.  
+**Current gate:** PHASE 2 Architecture Challenge. Findings must return as KEEP / REVISE / QUESTION / EXPERIMENT / OWNER DECISION REQUIRED before PRE-ARCH review.  
 **Pre-DO-IT gate:** D-027 remains mandatory — the affected Web start/auth/provider-routing flow cannot enter implementation until the conflicting AISYNC provider-selection behavior is explicitly reconciled, merged to AISYNC `main`, and verified.
 
 ## Purpose
@@ -2126,9 +2126,9 @@ The following remain implementation/runtime work and do not silently alter this 
 - full CREATE PROJECT contract;
 - future cross-conversation retrieval policy beyond explicit/scoped retrieval.
 
-## Confirmation state
+## Challenge / confirmation state
 
-The design has complete coverage of:
+The draft has complete 4/4 design coverage:
 
 ```text
 Purpose                  ✓
@@ -2137,16 +2137,37 @@ Main elements            ✓
 LOCKED decision lineage  ✓
 ```
 
-No unresolved Companion design question from Q-001 through Q-007 blocks owner confirmation.
+Under ZASSIMPLE v0.3.3, **4/4 means ready to challenge, not ready to confirm**.
 
-However:
+Current required path:
 
 ```text
-DESIGN confirmation
-≠ authorization to start affected DO IT
+DESIGN DRAFT 0.2
+↓
+ARCHITECTURE CHALLENGE
+↓
+controlled revision
+↓
+OWNER PRE-ARCH REVIEW
+↓
+YA, LOCK PRE-ARCH
+↓
+Execution Reality Check + real corpus
+↓
+detailed ACTION_PLAN + evidence tasks
+↓
+PRE-ARCH review / delta planning
+↓
+LAST CHALLENGE
+↓
+final justified revision
+↓
+CONFIRM DESIGN
 ```
 
-D-027 remains a hard cross-repository implementation gate until AISYNC reconciliation is completed and verified.
+Q-001 through Q-007 being resolved means no known pre-challenge question remains from that set; it does **not** guarantee that Architecture Challenge will find no new QUESTION / EXPERIMENT / OWNER DECISION REQUIRED item.
+
+D-027 remains a hard cross-repository implementation gate for the affected AISYNC/Companion front-door contract until reconciliation is completed and verified.
 
 ---
 
@@ -2222,6 +2243,7 @@ D-027 remains a separate hard pre-DO-IT reconciliation gate for the affected AIS
 
 | Version | Date | Change |
 |---|---|---|
+| 0.1.17 | 2026-10-09 | ZASS v0.3.3 audit correction: DESIGN DRAFT 0.2 lifecycle metadata now states 4/4 = READY FOR ARCHITECTURE CHALLENGE, not final confirmation; confirmation path now explicitly requires controlled revision → PRE-ARCH owner lock → Execution Reality Check/real corpus → detailed plan/evidence tasks → PRE-ARCH review/delta planning → LAST CHALLENGE → final confirmation. Architecture content and D-001–D-028 are unchanged. |
 | 0.1.16 | 2026-10-09 | Aligned the project-local procedure to ZASSIMPLE v0.3.3: added PRE-ARCH owner gate, Execution Reality Check, real artifact/sample pack, reusable real-sample corpus, Execution Surface Map, evidence-bounded vertical tasks, PRE-ARCH review/delta planning, LAST CHALLENGE, and evidence-backed final confirmation. Synthetic fixtures are PROVISIONAL when real evidence is unavailable. DESIGN DRAFT 0.2 and D-001–D-028 remain unchanged. |
 | 0.1.15 | 2026-10-09 | Activated a CrossAI Companion project-local ZASSIMPLE Architecture Challenge procedure: Work mode is the high-reasoning challenge lane; findings return to the canonical lane for KEEP/REVISE/QUESTION/EXPERIMENT/OWNER classification; ACTION_PLAN may feed explicit findings back into architecture; tasks must be architecture-decision-free; final DESIGN confirmation occurs after challenge, revision, planning, and atomic slicing. DESIGN DRAFT 0.2 and D-001–D-028 are unchanged. |
 | 0.1.14 | 2026-10-07 | Rewrote DESIGN DRAFT 0.2 from the current LOCKED D-016–D-028 set: persistent Core-owned conversations, CHAT/DECISION/PROJECT vs DUMP/DECIDE/DESIGN normalization, lineage-based branching, graceful Intelligence fallback, FREE/BYOK/POWER, persistent binding, shared Telegram, BYOC WhatsApp, explicit promotion, and the D-027 pre-DO-IT AISYNC reconciliation gate. No new architecture decision was introduced. |
