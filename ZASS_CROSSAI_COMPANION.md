@@ -2,7 +2,7 @@
 
 **Project:** CrossAI Companion  
 **Repository:** `dzuddiyn/CrossAI-Companion`  
-**Method:** ZASSIMPLE v0.3.0 + project-local Architecture Challenge refinement  
+**Method:** ZASSIMPLE v0.3.3 + project-local Architecture Challenge refinement  
 **Status:** DESIGN ACTIVE — bootstrap from LOCKED CrossAI direction  
 **Date initialized:** 2026-10-07  
 **Owner:** Project Owner  
@@ -30,17 +30,40 @@ PHASE 3 — DECISION REVIEW
     ↓
 PHASE 4 — ARCHITECTURE REVISION
     ↓
-PHASE 5 — ACTION_PLAN
+OWNER PRE-ARCH REVIEW
+    ↓
+YA, LOCK PRE-ARCH
+    ↓
+EXECUTION REALITY CHECK
+    ├─ real artifact / real sample pack
+    ├─ reusable real-sample corpus
+    └─ Execution Surface Map
+    ↓
+PHASE 5 — DETAILED ACTION_PLAN
     ↕
-architecture feedback when implementation reality exposes a flaw
+explicit feedback to PRE-ARCH when implementation reality exposes a flaw
     ↓
-PHASE 6 — ATOMIC TASK SLICING
+PHASE 6 — EVIDENCE-BOUNDED VERTICAL ATOMIC TASKS
     ↓
+PRE-ARCH REVIEW + DELTA PLANNING
+    ↓
+evidence sufficient?
+    ├─ NO → smallest unresolved evidence delta
+    └─ YES
+          ↓
+LAST CHALLENGE
+          ↓
+final justified revision
+          ↓
 PHASE 7 — FINAL REVIEW PACKAGE
-    ↓
-OWNER DESIGN CONFIRMATION
-    ↓
-DO IT
+          ↓
+OWNER FINAL DESIGN CONFIRMATION
+          ↓
+REBUILD RELEASE ACTION_PLAN + FRESH RELEASE TASKS
+          ↓
+DO IT / BUILD / VERIFY
+          ↓
+DELIVERED !!
 ```
 
 ### Work mode = challenge / reasoning chamber
@@ -120,6 +143,44 @@ show evidence + safe options
 owner decides
 ```
 
+### Execution Reality Check + real corpus
+
+For substantial technical architecture, PRE-ARCH must be tested against execution reality before detailed task slicing.
+
+Required evidence pack, where realistically available:
+
+- real repository/code structure;
+- real configuration/deployment surfaces;
+- real API/contracts/events;
+- real logs/errors/receipts/proofs;
+- real user/project artifacts or sanitized representative samples;
+- real provider/channel/runtime constraints;
+- reusable **real-sample corpus** for repeated task validation.
+
+```text
+PRE-ARCH
+    ↓
+REAL ARTIFACT / SAMPLE PACK
+    ↓
+EXECUTION SURFACE MAP
+architecture says
+vs
+real evidence says
+vs
+gap
+vs
+execution need
+```
+
+Rules:
+
+- real artifacts/samples are architecture + execution evidence, not merely final test data;
+- if real evidence is unavailable, synthetic fixtures may be used only when explicitly labeled **PROVISIONAL**;
+- synthetic PASS must not be represented as real-field proof;
+- reusable real-sample corpus should be retained/referenced so later tasks do not rediscover the same execution facts;
+- privacy-sensitive corpus must be sanitized/minimized or kept in an authorized private test location rather than committed publicly;
+- contradictory new real evidence may reopen PRE-ARCH assumptions or prior task conclusions.
+
 ### ACTION_PLAN ↔ architecture feedback
 
 ACTION_PLAN is implementation lineage, not merely a task list.
@@ -138,9 +199,39 @@ owner review where required
 resume ACTION_PLAN
 ```
 
-### Atomic-task rule
+### Evidence-bounded vertical atomic-task rule
 
 A task is executable only when the coding agent can complete it **without making a new architecture decision**.
+
+For applicable technical work, each task must carry:
+
+- one primary outcome;
+- bounded execution surface;
+- lineage to PRE-ARCH + ACTION_PLAN;
+- real fixture/sample/reference when reasonably available;
+- expected real outcome;
+- observed vs provisional evidence status;
+- allowed and forbidden files/modules;
+- acceptance criteria;
+- tests/regressions;
+- expected evidence/receipt;
+- commit expectation;
+- STOP/ESCALATE rules.
+
+Task review must feed **delta planning**:
+
+```text
+current PRE-ARCH
++ ACTION_PLAN
++ completed receipts/proofs
++ reusable real-sample corpus
+        ↓
+smallest unresolved delta
+        ↓
+next task
+```
+
+Do not repeat settled work unless contradictory evidence, changed dependency, or changed requirement justifies reopening it.
 
 Every executable task must contain bounded scope, dependencies, allowed/forbidden files, preconditions, acceptance criteria, tests, regression requirements, evidence, commit expectation, and STOP/ESCALATE rules.
 
@@ -159,16 +250,44 @@ Coding agent must STOP AND ESCALATE when:
 
 On STOP, the agent must report the finding, evidence, why execution stopped, exact decision/question required, and safe options without choosing for the owner.
 
-### Confirmation rule
+### PRE-ARCH and final confirmation rule
 
-For this project:
+For this substantial technical project:
 
 ```text
 coherent DESIGN draft
-≠ ready for confirmation automatically
+≠ final confirmed design
 ```
 
-Final owner DESIGN confirmation occurs only after the Architecture Challenge, revision review, implementation planning, and atomic-task slicing have demonstrated that the architecture is sufficiently bounded for execution.
+After challenge/revision coherence, the next owner gate is **PRE-ARCH**, not final confirmation.
+
+```text
+Challenge/revision coherent
+↓
+LOCK PRE-ARCH
+↓
+YA, LOCK PRE-ARCH
+↓
+Execution Reality Check
+↓
+real corpus + Execution Surface Map
+↓
+detailed ACTION_PLAN
+↓
+evidence-bounded vertical tasks
+↓
+PRE-ARCH review / delta planning
+↓
+LAST CHALLENGE
+↓
+final justified revision
+↓
+CONFIRM DESIGN
+↓
+YA, CONFIRM DESIGN
+```
+
+Final confirmation must be evidence-backed. PRE-ARCH is an execution baseline, not final architecture confirmation.
 
 ---
 
@@ -2060,8 +2179,14 @@ DESIGN    ← CURRENT
   PHASE 2 architecture challenge    ← CURRENT in Work mode
   PHASE 3 decision review           pending
   PHASE 4 architecture revision     pending
-  PHASE 5 ACTION_PLAN               pending
-  PHASE 6 atomic task slicing       pending
+  PRE-ARCH owner gate               pending
+  Execution Reality Check           pending
+  Real artifact/sample corpus       pending
+  Execution Surface Map             pending
+  PHASE 5 detailed ACTION_PLAN      pending
+  PHASE 6 evidence atomic tasks     pending
+  PRE-ARCH review/delta planning    pending
+  LAST CHALLENGE                    pending
   PHASE 7 final review package      pending
 DO IT     not started
 DELIVERED not started
@@ -2086,6 +2211,8 @@ D-027 remains a separate hard pre-DO-IT reconciliation gate for the affected AIS
 - Architecture revision must preserve valid existing design and show justified deltas rather than silently rewriting the whole design.
 - ACTION_PLAN may feed implementation reality back into architecture, but every feedback revision must be explicit and traceable.
 - Atomic tasks must not require the coding agent to make new architecture decisions.
+- For applicable technical work, real artifacts/samples are execution evidence; synthetic-only fixtures must be marked PROVISIONAL until real evidence exists.
+- Preserve/reuse the real-sample corpus and completed receipts/proofs; choose the next task from the smallest unresolved delta rather than rediscovering settled work.
 - Upstream AISYNC contract changes must be reconciled before Companion implementation claims compatibility.
 - Provider/channel implementation details remain replaceable unless explicitly promoted to architecture decisions.
 
@@ -2095,6 +2222,7 @@ D-027 remains a separate hard pre-DO-IT reconciliation gate for the affected AIS
 
 | Version | Date | Change |
 |---|---|---|
+| 0.1.16 | 2026-10-09 | Aligned the project-local procedure to ZASSIMPLE v0.3.3: added PRE-ARCH owner gate, Execution Reality Check, real artifact/sample pack, reusable real-sample corpus, Execution Surface Map, evidence-bounded vertical tasks, PRE-ARCH review/delta planning, LAST CHALLENGE, and evidence-backed final confirmation. Synthetic fixtures are PROVISIONAL when real evidence is unavailable. DESIGN DRAFT 0.2 and D-001–D-028 remain unchanged. |
 | 0.1.15 | 2026-10-09 | Activated a CrossAI Companion project-local ZASSIMPLE Architecture Challenge procedure: Work mode is the high-reasoning challenge lane; findings return to the canonical lane for KEEP/REVISE/QUESTION/EXPERIMENT/OWNER classification; ACTION_PLAN may feed explicit findings back into architecture; tasks must be architecture-decision-free; final DESIGN confirmation occurs after challenge, revision, planning, and atomic slicing. DESIGN DRAFT 0.2 and D-001–D-028 are unchanged. |
 | 0.1.14 | 2026-10-07 | Rewrote DESIGN DRAFT 0.2 from the current LOCKED D-016–D-028 set: persistent Core-owned conversations, CHAT/DECISION/PROJECT vs DUMP/DECIDE/DESIGN normalization, lineage-based branching, graceful Intelligence fallback, FREE/BYOK/POWER, persistent binding, shared Telegram, BYOC WhatsApp, explicit promotion, and the D-027 pre-DO-IT AISYNC reconciliation gate. No new architecture decision was introduced. |
 | 0.1.13 | 2026-10-07 | LOCKED D-028 routed-conversation branching: new IDEA/DECIDE/DESIGN threads use distinct Core conversation IDs linked by lineage and minimum seed context rather than full transcript cloning; source and child evolve independently and matching-route conversations avoid unnecessary re-branching. |
