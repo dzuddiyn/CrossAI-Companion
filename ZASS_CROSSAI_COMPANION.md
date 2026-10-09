@@ -3,7 +3,7 @@
 **Project:** CrossAI Companion  
 **Repository:** `dzuddiyn/CrossAI-Companion`  
 **Method:** ZASSIMPLE v0.3.0  
-**Status:** DESIGN ACTIVE — bootstrap from LOCKED CrossAI direction  
+**Status:** DESIGN ACTIVE — PHASE 2 ARCHITECTURE CHALLENGE running in Work mode  
 **Date initialized:** 2026-10-07  
 **Owner:** Project Owner  
 **Authority:** Project decision/readiness authority for CrossAI Companion. Upstream CrossAI Core / CrossAI Compatible contracts remain governed by `dzuddiyn/AISYNC`.
@@ -1900,21 +1900,85 @@ DO IT     not started
 DELIVERED not started
 ```
 
-Next design decision:
+## Active review procedure
 
-> **No remaining Q-001–Q-007 design blocker is open.**
+CrossAI Companion is currently inside the owner's newer architecture-review procedure:
 
-The current Companion architecture decision set is ready for owner-controlled DESIGN confirmation / action-plan slicing. This statement does not authorize implementation or merge by itself.
+```text
+PHASE 1 — READ & MAP CURRENT STATE
+        ↓
+PHASE 2 — ARCHITECTURE CHALLENGE
+        ↓
+PHASE 3 — KEEP / REVISE / QUESTION / EXPERIMENT / OWNER DECISION
+        ↓
+PHASE 4 — ARCHITECTURE REVISION
+        ↓
+PHASE 5 — ACTION_PLAN
+        ↕
+architecture feedback when implementation reality exposes a flaw
+        ↓
+PHASE 6 — ATOMIC TASK SLICING
+        ↓
+owner review / confirmation
+        ↓
+DO IT
+```
+
+**Current exact point:** **PHASE 2 — ARCHITECTURE CHALLENGE**, executed in **Work mode** for stronger reasoning and adversarial review.
+
+The current canonical design under challenge remains:
+
+```text
+DESIGN DRAFT 0.2
+derived from LOCKED D-001 through D-028
+```
+
+Work-mode challenge output is **review material**, not automatic project authority.
+
+Required promotion path:
+
+```text
+Work-mode findings
+        ↓
+canonical review against repo + LOCKED D-xxx
+        ↓
+classify:
+KEEP / REVISE / QUESTION / EXPERIMENT / OWNER DECISION
+        ↓
+only justified + owner-approved changes enter canonical ZASS / DESIGN
+```
+
+A Work-mode finding must not silently rewrite a LOCKED decision, change MVP scope, or authorize implementation.
+
+## Current blockers / non-blockers
+
+- **Q-001 through Q-007:** resolved.
+- **D-027 AISYNC reconciliation:** remains a hard gate before affected Web start/auth/provider-routing **DO IT**, but does **not** block architecture challenge, revision, ACTION_PLAN, or atomic task slicing.
+- **CrossAI Companion PR #6 — Companion Provider Router future work:** OPEN and non-blocking; it does not change DESIGN DRAFT 0.2 or MVP scope.
+- **AISYNC PR #79 — CrossAI Intelligence / agent compatibility future work:** OPEN and non-blocking; it is not part of the current Companion Architecture Challenge critical path.
+
+## Next canonical event
+
+Do **not** start a duplicate Architecture Challenge in this thread while Work mode is already performing PHASE 2.
+
+The next canonical event is:
+
+> **Receive the Work-mode PHASE 2 findings, audit them against live repository state and LOCKED D-001–D-028, then promote only reviewed conclusions into PHASE 3 classification.**
+
+DESIGN confirmation, ACTION_PLAN creation, and DO IT remain pending the architecture-challenge/revision sequence.
 
 ---
 
 # 13. CHANGE CONTROL
 
 - Do not silently rewrite D-001 through D-028.
+- Work-mode Architecture Challenge findings are advisory/review inputs until audited and promoted into canonical project state.
 - A new finding may refine DESIGN or ACTION_PLAN.
-- A finding that conflicts with a LOCKED decision requires a new explicit decision.
+- A finding that conflicts with a LOCKED decision requires a new explicit owner decision; challenge/reviewer output alone cannot supersede it.
+- Do not run parallel competing architecture reviews as separate authorities. Work mode may challenge aggressively; canonical ZASS remains the promotion/decision lane.
 - Upstream AISYNC contract changes must be reconciled before Companion implementation claims compatibility.
 - Provider/channel implementation details remain replaceable unless explicitly promoted to architecture decisions.
+- Future-work artifacts/PRs do not expand the current MVP unless explicitly promoted through owner-controlled architecture review.
 
 ---
 
@@ -1922,6 +1986,7 @@ The current Companion architecture decision set is ready for owner-controlled DE
 
 | Version | Date | Change |
 |---|---|---|
+| 0.1.15 | 2026-10-09 | Updated canonical ZASS process state: DESIGN DRAFT 0.2 is currently under PHASE 2 Architecture Challenge in Work mode; Work findings are advisory until reviewed/promoted through canonical ZASS; D-027 remains a pre-DO-IT gate only; Companion PR #6 and AISYNC PR #79 are non-blocking future-work side tracks. No D-xxx, DESIGN, MVP scope, ACTION_PLAN, or implementation change. |
 | 0.1.14 | 2026-10-07 | Rewrote DESIGN DRAFT 0.2 from the current LOCKED D-016–D-028 set: persistent Core-owned conversations, CHAT/DECISION/PROJECT vs DUMP/DECIDE/DESIGN normalization, lineage-based branching, graceful Intelligence fallback, FREE/BYOK/POWER, persistent binding, shared Telegram, BYOC WhatsApp, explicit promotion, and the D-027 pre-DO-IT AISYNC reconciliation gate. No new architecture decision was introduced. |
 | 0.1.13 | 2026-10-07 | LOCKED D-028 routed-conversation branching: new IDEA/DECIDE/DESIGN threads use distinct Core conversation IDs linked by lineage and minimum seed context rather than full transcript cloning; source and child evolve independently and matching-route conversations avoid unnecessary re-branching. |
 | 0.1.12 | 2026-10-07 | LOCKED D-027 AISYNC reconciliation gate: current AISYNC mandatory provider-selection behavior conflicts with Companion D-019; affected Web start/auth/provider-routing DO IT is blocked until an explicit owner-approved AISYNC refinement is merged and verified on AISYNC main. |
