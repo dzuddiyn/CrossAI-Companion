@@ -2,7 +2,7 @@
 
 **Project:** CrossAI Companion  
 **Repository:** `dzuddiyn/CrossAI-Companion`  
-**Method:** ZASSIMPLE v0.3.0  
+**Method:** ZASSIMPLE v0.3.3 + project-local Architecture Challenge refinement  
 **Status:** DESIGN ACTIVE — bootstrap from LOCKED CrossAI direction  
 **Date initialized:** 2026-10-07  
 **Owner:** Project Owner  
@@ -11,6 +11,285 @@
 > **ZASSIMPLE: lightweight di permukaan, tetapi lineage tetap kuat sampai execution.**
 >
 > **DUMP → DISTILL → DECIDE → DESIGN → DO IT → DELIVERED !!**
+
+## PROJECT-LOCAL ZASSIMPLE EXECUTION PROTOCOL
+
+**Status:** ACTIVE FOR THIS PROJECT  
+**Scope:** CrossAI Companion only. This refines execution procedure without changing global ZASSIMPLE semantics or any LOCKED D-xxx architecture decision.
+
+For this project, DESIGN is not confirmed immediately after a coherent draft. A dedicated high-reasoning architecture challenge must occur first.
+
+```text
+DRAFT DESIGN
+    ↓
+PHASE 1 — READ & MAP CURRENT STATE
+    ↓
+PHASE 2 — ARCHITECTURE CHALLENGE
+    ↓
+PHASE 3 — DECISION REVIEW
+    ↓
+PHASE 4 — ARCHITECTURE REVISION
+    ↓
+OWNER PRE-ARCH REVIEW
+    ↓
+YA, LOCK PRE-ARCH
+    ↓
+EXECUTION REALITY CHECK
+    ├─ real artifact / real sample pack
+    ├─ reusable real-sample corpus
+    └─ Execution Surface Map
+    ↓
+PHASE 5 — DETAILED ACTION_PLAN
+    ↕
+explicit feedback to PRE-ARCH when implementation reality exposes a flaw
+    ↓
+PHASE 6 — EVIDENCE-BOUNDED VERTICAL ATOMIC TASKS
+    ↓
+PRE-ARCH REVIEW + DELTA PLANNING
+    ↓
+evidence sufficient?
+    ├─ NO → smallest unresolved evidence delta
+    └─ YES
+          ↓
+LAST CHALLENGE
+          ↓
+final justified revision
+          ↓
+PHASE 7 — FINAL REVIEW PACKAGE
+          ↓
+OWNER FINAL DESIGN CONFIRMATION
+          ↓
+REBUILD RELEASE ACTION_PLAN + FRESH RELEASE TASKS
+          ↓
+DO IT / BUILD / VERIFY
+          ↓
+DELIVERED !!
+```
+
+### Work mode = challenge / reasoning chamber
+
+For this project, Work mode may be used for deep architecture reasoning, red-team review, pre-mortem, assumption challenge, failure-mode analysis, and implementation planning.
+
+Work-mode output is **review evidence**, not canonical authority by itself.
+
+```text
+Work finding
+≠ LOCKED decision
+≠ canonical architecture
+≠ execution authority
+```
+
+A Work finding becomes canonical only after project review verifies it against:
+
+- current repository state;
+- D-001 through D-028 and any later LOCKED decisions;
+- applicable AISYNC/Core contracts;
+- explicit owner decisions;
+- current design/action-plan/task lineage.
+
+### Canonical lane
+
+The canonical project lane owns:
+
+- KEEP / REVISE / QUESTION / EXPERIMENT / OWNER DECISION classification;
+- explicit revision proposals;
+- owner confirmations;
+- repository persistence;
+- final DESIGN;
+- ACTION_PLAN;
+- executable TASKS.
+
+No Work-mode output may silently overwrite a LOCKED decision.
+
+### Phase 2 challenge methods
+
+Default challenge stack:
+
+1. Red-team review.
+2. Pre-mortem.
+3. Assumption challenge.
+4. Failure-mode analysis.
+
+Review must explicitly test:
+
+- hidden coupling and spaghetti risk;
+- ownership of state;
+- duplicated responsibilities;
+- module boundaries and circular dependencies;
+- retries, races, idempotency and recovery;
+- observability/logging;
+- testability and rollback;
+- secrets/access/privacy/tenant isolation;
+- provider/channel/vendor lock-in;
+- quota/cost/runtime assumptions;
+- migration and maintainability;
+- autonomous coding-agent handoff quality.
+
+Every material finding must state severity, evidence, failure scenario, recommended direction, and whether a LOCKED decision would need to change.
+
+### Locked-decision stop rule
+
+If a finding requires changing a LOCKED decision:
+
+```text
+STOP
+↓
+do not rewrite the decision
+↓
+raise OWNER DECISION REQUIRED
+↓
+show evidence + safe options
+↓
+owner decides
+```
+
+### Execution Reality Check + real corpus
+
+For substantial technical architecture, PRE-ARCH must be tested against execution reality before detailed task slicing.
+
+Required evidence pack, where realistically available:
+
+- real repository/code structure;
+- real configuration/deployment surfaces;
+- real API/contracts/events;
+- real logs/errors/receipts/proofs;
+- real user/project artifacts or sanitized representative samples;
+- real provider/channel/runtime constraints;
+- reusable **real-sample corpus** for repeated task validation.
+
+```text
+PRE-ARCH
+    ↓
+REAL ARTIFACT / SAMPLE PACK
+    ↓
+EXECUTION SURFACE MAP
+architecture says
+vs
+real evidence says
+vs
+gap
+vs
+execution need
+```
+
+Rules:
+
+- real artifacts/samples are architecture + execution evidence, not merely final test data;
+- if real evidence is unavailable, synthetic fixtures may be used only when explicitly labeled **PROVISIONAL**;
+- synthetic PASS must not be represented as real-field proof;
+- reusable real-sample corpus should be retained/referenced so later tasks do not rediscover the same execution facts;
+- privacy-sensitive corpus must be sanitized/minimized or kept in an authorized private test location rather than committed publicly;
+- contradictory new real evidence may reopen PRE-ARCH assumptions or prior task conclusions.
+
+### ACTION_PLAN ↔ architecture feedback
+
+ACTION_PLAN is implementation lineage, not merely a task list.
+
+If planning exposes an architecture flaw:
+
+```text
+ACTION_PLAN finding
+      ↓
+return to architecture
+      ↓
+record explicit revision
+      ↓
+owner review where required
+      ↓
+resume ACTION_PLAN
+```
+
+### Evidence-bounded vertical atomic-task rule
+
+A task is executable only when the coding agent can complete it **without making a new architecture decision**.
+
+For applicable technical work, each task must carry:
+
+- one primary outcome;
+- bounded execution surface;
+- lineage to PRE-ARCH + ACTION_PLAN;
+- real fixture/sample/reference when reasonably available;
+- expected real outcome;
+- observed vs provisional evidence status;
+- allowed and forbidden files/modules;
+- acceptance criteria;
+- tests/regressions;
+- expected evidence/receipt;
+- commit expectation;
+- STOP/ESCALATE rules.
+
+Task review must feed **delta planning**:
+
+```text
+current PRE-ARCH
++ ACTION_PLAN
++ completed receipts/proofs
++ reusable real-sample corpus
+        ↓
+smallest unresolved delta
+        ↓
+next task
+```
+
+Do not repeat settled work unless contradictory evidence, changed dependency, or changed requirement justifies reopening it.
+
+Every executable task must contain bounded scope, dependencies, allowed/forbidden files, preconditions, acceptance criteria, tests, regression requirements, evidence, commit expectation, and STOP/ESCALATE rules.
+
+Coding agent must STOP AND ESCALATE when:
+
+- a LOCKED decision must change;
+- architecture documents conflict;
+- required data is missing/ambiguous;
+- scope requires unapproved external/production access;
+- required secrets are unavailable;
+- multiple materially different designs remain possible;
+- the same failure repeats three times without a new diagnosis;
+- fixing one test would weaken another valid test;
+- a broader Core/module change is discovered outside task scope;
+- unexpected uncommitted human changes may be overwritten.
+
+On STOP, the agent must report the finding, evidence, why execution stopped, exact decision/question required, and safe options without choosing for the owner.
+
+### PRE-ARCH and final confirmation rule
+
+For this substantial technical project:
+
+```text
+coherent DESIGN draft
+≠ final confirmed design
+```
+
+After challenge/revision coherence, the next owner gate is **PRE-ARCH**, not final confirmation.
+
+```text
+Challenge/revision coherent
+↓
+LOCK PRE-ARCH
+↓
+YA, LOCK PRE-ARCH
+↓
+Execution Reality Check
+↓
+real corpus + Execution Surface Map
+↓
+detailed ACTION_PLAN
+↓
+evidence-bounded vertical tasks
+↓
+PRE-ARCH review / delta planning
+↓
+LAST CHALLENGE
+↓
+final justified revision
+↓
+CONFIRM DESIGN
+↓
+YA, CONFIRM DESIGN
+```
+
+Final confirmation must be evidence-backed. PRE-ARCH is an execution baseline, not final architecture confirmation.
+
+---
 
 ---
 
@@ -1341,9 +1620,9 @@ Creating `[IDEA]`, `[DECIDE]`, or `[DESIGN]` threads by cloning full source tran
 
 # 10. DESIGN — DRAFT 0.2
 
-**Status:** READY FOR OWNER DESIGN CONFIRMATION  
+**Status:** READY FOR ARCHITECTURE CHALLENGE — NOT READY FOR FINAL CONFIRMATION  
 **Design Progress:** 4/4 coverage — purpose / main flow / main elements / relevant LOCKED decisions  
-**Design confirmation blocker:** none identified in the Companion design itself.  
+**Current gate:** PHASE 2 Architecture Challenge. Findings must return as KEEP / REVISE / QUESTION / EXPERIMENT / OWNER DECISION REQUIRED before PRE-ARCH review.  
 **Pre-DO-IT gate:** D-027 remains mandatory — the affected Web start/auth/provider-routing flow cannot enter implementation until the conflicting AISYNC provider-selection behavior is explicitly reconciled, merged to AISYNC `main`, and verified.
 
 ## Purpose
@@ -1847,9 +2126,9 @@ The following remain implementation/runtime work and do not silently alter this 
 - full CREATE PROJECT contract;
 - future cross-conversation retrieval policy beyond explicit/scoped retrieval.
 
-## Confirmation state
+## Challenge / confirmation state
 
-The design has complete coverage of:
+The draft has complete 4/4 design coverage:
 
 ```text
 Purpose                  ✓
@@ -1858,16 +2137,37 @@ Main elements            ✓
 LOCKED decision lineage  ✓
 ```
 
-No unresolved Companion design question from Q-001 through Q-007 blocks owner confirmation.
+Under ZASSIMPLE v0.3.3, **4/4 means ready to challenge, not ready to confirm**.
 
-However:
+Current required path:
 
 ```text
-DESIGN confirmation
-≠ authorization to start affected DO IT
+DESIGN DRAFT 0.2
+↓
+ARCHITECTURE CHALLENGE
+↓
+controlled revision
+↓
+OWNER PRE-ARCH REVIEW
+↓
+YA, LOCK PRE-ARCH
+↓
+Execution Reality Check + real corpus
+↓
+detailed ACTION_PLAN + evidence tasks
+↓
+PRE-ARCH review / delta planning
+↓
+LAST CHALLENGE
+↓
+final justified revision
+↓
+CONFIRM DESIGN
 ```
 
-D-027 remains a hard cross-repository implementation gate until AISYNC reconciliation is completed and verified.
+Q-001 through Q-007 being resolved means no known pre-challenge question remains from that set; it does **not** guarantee that Architecture Challenge will find no new QUESTION / EXPERIMENT / OWNER DECISION REQUIRED item.
+
+D-027 remains a hard cross-repository implementation gate for the affected AISYNC/Companion front-door contract until reconciliation is completed and verified.
 
 ---
 
@@ -1896,23 +2196,44 @@ DUMP      ✓
 DISTILL   ✓
 DECIDE    ✓ baseline architecture locks imported
 DESIGN    ← CURRENT
+  PHASE 1 current-state mapping      ✓ baseline available
+  PHASE 2 architecture challenge    ← CURRENT in Work mode
+  PHASE 3 decision review           pending
+  PHASE 4 architecture revision     pending
+  PRE-ARCH owner gate               pending
+  Execution Reality Check           pending
+  Real artifact/sample corpus       pending
+  Execution Surface Map             pending
+  PHASE 5 detailed ACTION_PLAN      pending
+  PHASE 6 evidence atomic tasks     pending
+  PRE-ARCH review/delta planning    pending
+  LAST CHALLENGE                    pending
+  PHASE 7 final review package      pending
 DO IT     not started
 DELIVERED not started
 ```
 
-Next design decision:
+Current procedural state:
 
-> **No remaining Q-001–Q-007 design blocker is open.**
+> **DESIGN DRAFT 0.2 is the challenge target, not yet the final confirmed design.**
 
-The current Companion architecture decision set is ready for owner-controlled DESIGN confirmation / action-plan slicing. This statement does not authorize implementation or merge by itself.
+Work mode is currently the high-reasoning challenge lane. Its findings must return to the canonical project lane for KEEP / REVISE / QUESTION / EXPERIMENT / OWNER DECISION classification before any design revision is accepted.
+
+D-027 remains a separate hard pre-DO-IT reconciliation gate for the affected AISYNC/Companion front-door contract.
 
 ---
 
 # 13. CHANGE CONTROL
 
 - Do not silently rewrite D-001 through D-028.
+- Work-mode challenge output is evidence, not authority; canonical promotion requires project review.
 - A new finding may refine DESIGN or ACTION_PLAN.
-- A finding that conflicts with a LOCKED decision requires a new explicit decision.
+- A finding that conflicts with a LOCKED decision requires OWNER DECISION REQUIRED and a new explicit decision before revision.
+- Architecture revision must preserve valid existing design and show justified deltas rather than silently rewriting the whole design.
+- ACTION_PLAN may feed implementation reality back into architecture, but every feedback revision must be explicit and traceable.
+- Atomic tasks must not require the coding agent to make new architecture decisions.
+- For applicable technical work, real artifacts/samples are execution evidence; synthetic-only fixtures must be marked PROVISIONAL until real evidence exists.
+- Preserve/reuse the real-sample corpus and completed receipts/proofs; choose the next task from the smallest unresolved delta rather than rediscovering settled work.
 - Upstream AISYNC contract changes must be reconciled before Companion implementation claims compatibility.
 - Provider/channel implementation details remain replaceable unless explicitly promoted to architecture decisions.
 
@@ -1922,6 +2243,9 @@ The current Companion architecture decision set is ready for owner-controlled DE
 
 | Version | Date | Change |
 |---|---|---|
+| 0.1.17 | 2026-10-09 | ZASS v0.3.3 audit correction: DESIGN DRAFT 0.2 lifecycle metadata now states 4/4 = READY FOR ARCHITECTURE CHALLENGE, not final confirmation; confirmation path now explicitly requires controlled revision → PRE-ARCH owner lock → Execution Reality Check/real corpus → detailed plan/evidence tasks → PRE-ARCH review/delta planning → LAST CHALLENGE → final confirmation. Architecture content and D-001–D-028 are unchanged. |
+| 0.1.16 | 2026-10-09 | Aligned the project-local procedure to ZASSIMPLE v0.3.3: added PRE-ARCH owner gate, Execution Reality Check, real artifact/sample pack, reusable real-sample corpus, Execution Surface Map, evidence-bounded vertical tasks, PRE-ARCH review/delta planning, LAST CHALLENGE, and evidence-backed final confirmation. Synthetic fixtures are PROVISIONAL when real evidence is unavailable. DESIGN DRAFT 0.2 and D-001–D-028 remain unchanged. |
+| 0.1.15 | 2026-10-09 | Activated a CrossAI Companion project-local ZASSIMPLE Architecture Challenge procedure: Work mode is the high-reasoning challenge lane; findings return to the canonical lane for KEEP/REVISE/QUESTION/EXPERIMENT/OWNER classification; ACTION_PLAN may feed explicit findings back into architecture; tasks must be architecture-decision-free; final DESIGN confirmation occurs after challenge, revision, planning, and atomic slicing. DESIGN DRAFT 0.2 and D-001–D-028 are unchanged. |
 | 0.1.14 | 2026-10-07 | Rewrote DESIGN DRAFT 0.2 from the current LOCKED D-016–D-028 set: persistent Core-owned conversations, CHAT/DECISION/PROJECT vs DUMP/DECIDE/DESIGN normalization, lineage-based branching, graceful Intelligence fallback, FREE/BYOK/POWER, persistent binding, shared Telegram, BYOC WhatsApp, explicit promotion, and the D-027 pre-DO-IT AISYNC reconciliation gate. No new architecture decision was introduced. |
 | 0.1.13 | 2026-10-07 | LOCKED D-028 routed-conversation branching: new IDEA/DECIDE/DESIGN threads use distinct Core conversation IDs linked by lineage and minimum seed context rather than full transcript cloning; source and child evolve independently and matching-route conversations avoid unnecessary re-branching. |
 | 0.1.12 | 2026-10-07 | LOCKED D-027 AISYNC reconciliation gate: current AISYNC mandatory provider-selection behavior conflicts with Companion D-019; affected Web start/auth/provider-routing DO IT is blocked until an explicit owner-approved AISYNC refinement is merged and verified on AISYNC main. |
