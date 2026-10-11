@@ -364,6 +364,21 @@ CrossAI has saved an Idea
 
 The Companion should remain natural and lightweight while CrossAI Core retains semantic authority.
 
+Cross-project authority must remain clean:
+
+```text
+Temaya
+→ family / life / household
+
+CrossAI Personal Agent / Companion
+→ idea / decision / project
+
+Dzuddiyn Library
+→ searchable knowledge/reference projection
+```
+
+A personal owner-side client, a shared Companion service, and a DL projection are different roles. None may silently become CrossAI Core authority.
+
 The minimum useful proof is:
 
 ```text
@@ -1527,6 +1542,112 @@ Titles and prefixes remain presentation metadata. Stable Core conversation IDs a
 
 This decision refines D-020/D-022 without changing their Core-owned continuity or explicit-promotion authority.
 
+## D-029 | LOCKED — Owner-local CrossAI Personal Agent and clean capture-domain boundary
+
+**Source:** Project Owner direction reconciled from Temaya D-058 at canonical Temaya commit `3dc06dcd21cf5d7395c057b109af8438ad83aa84`.
+
+**Decision:** The owner may run a separate **CrossAI Personal Agent** inside the same personal OpenClaw Gateway as Temaya. This Personal Agent is an optional owner-side CrossAI-compatible client. It is **not** a per-user clone of the shared CrossAI Companion service and does not replace the scalable shared/commercial Companion architecture.
+
+Owner-local topology:
+
+```text
+Mini PC
+└── OpenClaw Gateway
+    ├── Temaya Agent
+    │   └── family / life / household
+    └── CrossAI Personal Agent
+        └── idea / decision / project
+```
+
+### Capture-domain separation
+
+Default owner-local capture domains are:
+
+```text
+Temaya
+→ family / life / household
+
+CrossAI Personal Agent / Companion
+→ idea / decision / project
+```
+
+Temaya must not silently promote an ordinary Temaya conversation into canonical CrossAI Idea/Decision/Project state.
+
+If Temaya detects creation/project intent, the maximum automatic behavior is an advisory handoff prompt such as:
+
+> **Forward to CrossAI?**
+
+Only explicit user approval may continue:
+
+```text
+Temaya context
+      ↓ explicit approval
+CrossAI Compatible
+      ↓
+CrossAI Core governance
+      ↓
+SAVE / mutation
+      ↓
+factual receipt
+```
+
+### Product/shared-service compatibility
+
+This decision does not change:
+
+- **D-004** shared multi-user Companion service architecture;
+- **D-016** Web → WhatsApp → Temaya → Telegram Companion delivery sequence;
+- **D-019** Web Companion as the default shared/Web product entry;
+- **D-020** Core-owned private continuity;
+- **D-024** external channel binding / BYOC WhatsApp semantics.
+
+The Personal Agent may be the owner's preferred local entry surface for creation work without becoming the ordinary multi-user product architecture.
+
+### WABA / Meta coexistence
+
+The owner-local Personal Agent must be usable without WABA/Meta.
+
+WABA/Meta remains valid for learning, portfolio use, and shared/cloud external access under the existing channel/binding policy. A WABA webhook that terminates on the home mini-PC remains dependent on home power/internet/runtime; true independent external availability requires the relevant channel/backend path to be hosted independently.
+
+**Reason:** Preserve a simple personal OpenClaw workflow while keeping the shared Companion architecture scalable and authority-clean.
+
+## D-030 | LOCKED — Companion is not the CrossAI ↔ Dzuddiyn Library synchronization authority
+
+**Source:** Project Owner direction reconciled from Temaya D-058 at canonical Temaya commit `3dc06dcd21cf5d7395c057b109af8438ad83aa84`.
+
+**Decision:** CrossAI Companion and the owner-local CrossAI Personal Agent must not become the middleware or canonical synchronization authority between CrossAI Core and Dzuddiyn Library.
+
+Preferred authority shape:
+
+```text
+CrossAI Core
+canonical semantic/governance authority
+        ↓
+stable Core contract / API / event
+        ↓
+DL CrossAI Adapter
+        ↓
+Dzuddiyn Library
+searchable derived projection/reference
+```
+
+Rules:
+
+- DL projection/reference is for discovery/search and must not become a second editable CrossAI master;
+- authoritative detail is obtained through a scoped live read from CrossAI Core using stable CrossAI identity;
+- DL may provide scoped knowledge/context to CrossAI when authorized;
+- DL must not directly mutate canonical CrossAI Idea/Decision/Project state;
+- mutation from DL/Temaya context must use an explicit CrossAI action → CrossAI Compatible → CrossAI Core governance → factual SAVE receipt;
+- no CrossAI/AISYNC internal database scraping;
+- no Apps Script-internal coupling as the external contract;
+- no mandatory Obsidian/Notion middleware;
+- existing CrossAI/AISYNC durable-storage authorities remain unchanged;
+- this decision does not require a new central SQL/content warehouse.
+
+The exact stable Core read/event/projection contract is governed upstream by AISYNC/Core authority and must be reconciled there before implementation claims compatibility.
+
+**Reason:** Keep Companion replaceable, preserve Core authority, and allow CrossAI backend/storage technology to evolve without breaking DL integration.
+
 ---
 
 # 7. OPEN QUESTIONS
@@ -1602,6 +1723,14 @@ Companion D-019 and current AISYNC D-020/D-021 encode conflicting Web-start prov
 
 Creating `[IDEA]`, `[DECIDE]`, or `[DESIGN]` threads by cloning full source transcripts would create competing editable histories. D-028 locks lineage-linked branching with minimum seed context and independent stable conversation identities.
 
+## R-009 | MITIGATED BY D-029 — Owner-local capture-domain bleed
+
+Without an explicit boundary, Temaya family/life conversations could silently become CrossAI creation state or a personal OpenClaw deployment could be mistaken for the shared Companion architecture. D-029 separates both concerns.
+
+## R-010 | MITIGATED BY D-030 + AISYNC upstream contract — DL projection becomes a second master
+
+A searchable DL projection could drift into a competing CrossAI database or direct-write path. D-030 forbids Companion-mediated synchronization and reserves canonical read/mutation authority for Core.
+
 ---
 
 # 9. CURRENT SELECTION MATRIX
@@ -1615,10 +1744,19 @@ Creating `[IDEA]`, `[DECIDE]`, or `[DESIGN]` threads by cloning full source tran
 | 3 | Temaya integration | PASS | Prove a peer assistant can use CrossAI Compatible without Companion | Requires Compatible contract mature enough for external assistant integration | **D-016 LOCKED — THIRD** |
 | 4 | Telegram | PASS | Add CrossAI-owned shared Telegram bot + persistent user binding after earlier boundaries are proven | Shared-bot/binding model LOCKED; exact webhook/runtime details remain implementation work | **D-016 + D-024 LOCKED — FOURTH** |
 
-**Current direction:** Sequence is owner-LOCKED. D-017 through D-024 now cover the Web Companion vertical slice, minimum SAVE contract, Web auth/start UX, Core-owned event-driven conversation continuity, FREE/BYOK/POWER provider freedom, routed CHAT/DECISION/PROJECT conversations, PROJECT/[DESIGN] naming, and persistent external-channel access through shared Telegram + BYOC WhatsApp. **Q-001 through Q-007 are resolved.**
+**Current direction:** Sequence is owner-LOCKED. D-017 through D-024 cover the shared Companion product path. D-029 adds a separate owner-local Personal Agent without changing that order. D-030 keeps CrossAI↔DL synchronization outside Companion and under Core authority.
+
+## Reconciliation topic: Temaya D-058 / owner-local + DL boundary
+
+| Candidate | Must-have fit | Strength | Risk / dependency | Status |
+|---|---|---|---|---|
+| Owner-local CrossAI Personal Agent as peer CrossAI-compatible client | PASS | Simple personal Mini-PC/OpenClaw path without cloning shared Companion service | Must preserve separate agent/session authority and Core auth | **D-029 LOCKED** |
+| Direct CrossAI Core ↔ DL projection + scoped live read | PASS | Backend-replaceable, no second CrossAI master | Exact Core read/event contract belongs to AISYNC and is not yet implementation-ready | **D-030 LOCKED + upstream AISYNC reconciliation** |
+
+**Q-001 through Q-007 remain resolved.**
 ---
 
-# 10. DESIGN — DRAFT 0.2
+# 10. DESIGN — DRAFT 0.3
 
 **Status:** READY FOR ARCHITECTURE CHALLENGE — NOT READY FOR FINAL CONFIRMATION  
 **Design Progress:** 4/4 coverage — purpose / main flow / main elements / relevant LOCKED decisions  
@@ -1691,38 +1829,75 @@ The sequence controls delivery priority only. It does not change the common Core
 ## Main architecture
 
 ```text
-                          CROSSAI CORE
-                ┌──────────────────────────┐
-                │ identity / authorization │
-                │ Core-owned conversations │
-                │ CHAT / DECISION / PROJECT│
-                │ lineage / routing        │
-                │ ASC governance           │
-                │ canonical SAVE truth     │
-                │ factual receipts         │
-                │ CrossAI Intelligence     │
-                └────────────▲─────────────┘
-                             │
-                    CrossAI Compatible
-                             │
-                ┌────────────┴─────────────┐
-                │ CROSSAI COMPANION        │
-                │                          │
-                │ Companion orchestration  │
-                │ AI Provider Adapter      │
-                │ route-signal handling    │
-                │ Compatible client        │
-                │ receipt presentation     │
-                └────────────▲─────────────┘
-                             │
-                 ┌───────────┼───────────┐
-                 │           │           │
-                 ↓           ↓           ↓
-              Web Chat   BYOC WhatsApp  Telegram
-                                      shared bot
+                               CROSSAI CORE
+                     ┌──────────────────────────┐
+                     │ identity / authorization │
+                     │ Core-owned conversations │
+                     │ CHAT / DECISION / PROJECT│
+                     │ lineage / routing        │
+                     │ ASC governance           │
+                     │ canonical SAVE truth     │
+                     │ factual receipts         │
+                     │ CrossAI Intelligence     │
+                     └────────────▲─────────────┘
+                                  │
+                         CrossAI Compatible
+                                  │
+             ┌────────────────────┼────────────────────┐
+             │                    │                    │
+             ▼                    ▼                    ▼
+     CROSSAI COMPANION    CROSSAI PERSONAL       TEMAYA / OTHER
+      shared product       AGENT (owner)          compatible client
+             │                    │                    │
+      Web / WhatsApp /        OpenClaw          explicit approved
+         Telegram             Gateway               handoff only
+
+CrossAI Core
+      │
+      └── stable canonical read/event boundary
+               ↓
+         DL CrossAI Adapter
+               ↓
+        Dzuddiyn Library
+   derived searchable projection
 ```
 
-Temaya, Kerani AI, and future compatible assistants may bypass Companion and use the CrossAI Compatible boundary directly.
+The owner-local Personal Agent, Temaya, Kerani AI, and future compatible assistants are peer clients of CrossAI Compatible where applicable; they do not become Companion internals.
+
+The DL path is not routed through Companion. Companion remains the conversational product surface, while the Core↔DL contract is an upstream Core/AISYNC responsibility.
+
+## Owner-local Personal Agent and capture-domain boundary
+
+```text
+Mini PC
+└── OpenClaw Gateway
+    ├── Temaya Agent
+    │   └── family / life / household
+    └── CrossAI Personal Agent
+        └── idea / decision / project
+```
+
+The Personal Agent is a deployment/client convenience for the owner. It does not change the shared Companion service topology or D-016 delivery order.
+
+Temaya may suggest **Forward to CrossAI?** but cannot silently promote family/life conversation state into CrossAI. Explicit approval must enter through CrossAI Compatible/Core governance and end in a factual receipt.
+
+The Personal Agent does not require WABA/Meta. Shared/cloud WABA access may coexist separately under D-024 and the applicable hosted channel architecture.
+
+## CrossAI ↔ Dzuddiyn Library boundary
+
+```text
+CrossAI Core
+      ↓ stable canonical contract / API / event
+DL CrossAI Adapter
+      ↓
+Dzuddiyn Library projection
+      ↓ search/discover
+scoped live read → CrossAI Core
+```
+
+DL holds only authorized searchable references/projections. It does not own CrossAI Idea/Decision/Project truth. DL→CrossAI mutation must return through CrossAI Compatible/Core governance.
+
+Exact read/event/projection contract remains upstream AISYNC responsibility; this Companion design only locks that Companion is not the middleware.
 
 ## Web Companion start flow
 
@@ -2089,6 +2264,18 @@ visible CHAT / DECISION / PROJECT
 
 binding
 ≠ bypass Core authorization
+
+owner-local Personal Agent
+≠ shared Companion service clone
+
+Temaya family/life capture
+≠ silent CrossAI promotion
+
+DL projection
+≠ CrossAI canonical state
+
+Companion
+≠ Core↔DL synchronization middleware
 ```
 
 ## Locked-decision lineage
@@ -2109,6 +2296,8 @@ D-025  visible vs internal routing normalization
 D-026  graceful CrossAI Intelligence fallback
 D-027  mandatory AISYNC reconciliation gate before affected DO IT
 D-028  lineage-based routed-conversation branching
+D-029  owner-local Personal Agent + clean capture-domain boundary
+D-030  Companion excluded from Core↔DL sync authority
 ```
 
 ## Open implementation boundaries — not design blockers
@@ -2124,7 +2313,10 @@ The following remain implementation/runtime work and do not silently alter this 
 - exact routed-thread seed-context representation;
 - canonical Decision SAVE contract;
 - full CREATE PROJECT contract;
-- future cross-conversation retrieval policy beyond explicit/scoped retrieval.
+- future cross-conversation retrieval policy beyond explicit/scoped retrieval;
+- exact OpenClaw Personal Agent runtime/session/security implementation;
+- exact AISYNC/Core canonical read/event contract for DL projection/live-read;
+- DL projection schema, staleness, deletion/revocation, retry/idempotency and privacy filters.
 
 ## Challenge / confirmation state
 
@@ -2142,7 +2334,7 @@ Under ZASSIMPLE v0.3.3, **4/4 means ready to challenge, not ready to confirm**.
 Current required path:
 
 ```text
-DESIGN DRAFT 0.2
+DESIGN DRAFT 0.3
 ↓
 ARCHITECTURE CHALLENGE
 ↓
@@ -2215,7 +2407,7 @@ DELIVERED not started
 
 Current procedural state:
 
-> **DESIGN DRAFT 0.2 is the challenge target, not yet the final confirmed design.**
+> **DESIGN DRAFT 0.3 is the current challenge target, not yet the final confirmed design.**
 
 Work mode is currently the high-reasoning challenge lane. Its findings must return to the canonical project lane for KEEP / REVISE / QUESTION / EXPERIMENT / OWNER DECISION classification before any design revision is accepted.
 
@@ -2225,7 +2417,7 @@ D-027 remains a separate hard pre-DO-IT reconciliation gate for the affected AIS
 
 # 13. CHANGE CONTROL
 
-- Do not silently rewrite D-001 through D-028.
+- Do not silently rewrite D-001 through D-030.
 - Work-mode challenge output is evidence, not authority; canonical promotion requires project review.
 - A new finding may refine DESIGN or ACTION_PLAN.
 - A finding that conflicts with a LOCKED decision requires OWNER DECISION REQUIRED and a new explicit decision before revision.
@@ -2243,6 +2435,7 @@ D-027 remains a separate hard pre-DO-IT reconciliation gate for the affected AIS
 
 | Version | Date | Change |
 |---|---|---|
+| 0.1.18 | 2026-10-11 | Reconciled Temaya D-058 (commit 3dc06dcd21cf5d7395c057b109af8438ad83aa84): LOCKED D-029 owner-local CrossAI Personal Agent + clean Temaya/CrossAI capture-domain boundary and WABA coexistence; LOCKED D-030 Companion exclusion from CrossAI Core↔DL synchronization authority; revised DESIGN DRAFT 0.3 as a bounded delta while preserving D-004/D-007/D-011/D-016/D-019/D-020/D-024 and keeping ACTION_PLAN/TASKS gated until PRE-ARCH. |
 | 0.1.17 | 2026-10-09 | ZASS v0.3.3 audit correction: DESIGN DRAFT 0.2 lifecycle metadata now states 4/4 = READY FOR ARCHITECTURE CHALLENGE, not final confirmation; confirmation path now explicitly requires controlled revision → PRE-ARCH owner lock → Execution Reality Check/real corpus → detailed plan/evidence tasks → PRE-ARCH review/delta planning → LAST CHALLENGE → final confirmation. Architecture content and D-001–D-028 are unchanged. |
 | 0.1.16 | 2026-10-09 | Aligned the project-local procedure to ZASSIMPLE v0.3.3: added PRE-ARCH owner gate, Execution Reality Check, real artifact/sample pack, reusable real-sample corpus, Execution Surface Map, evidence-bounded vertical tasks, PRE-ARCH review/delta planning, LAST CHALLENGE, and evidence-backed final confirmation. Synthetic fixtures are PROVISIONAL when real evidence is unavailable. DESIGN DRAFT 0.2 and D-001–D-028 remain unchanged. |
 | 0.1.15 | 2026-10-09 | Activated a CrossAI Companion project-local ZASSIMPLE Architecture Challenge procedure: Work mode is the high-reasoning challenge lane; findings return to the canonical lane for KEEP/REVISE/QUESTION/EXPERIMENT/OWNER classification; ACTION_PLAN may feed explicit findings back into architecture; tasks must be architecture-decision-free; final DESIGN confirmation occurs after challenge, revision, planning, and atomic slicing. DESIGN DRAFT 0.2 and D-001–D-028 are unchanged. |
